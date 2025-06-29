@@ -49,6 +49,7 @@ public class Main {
                     //ID , name , type , price, quantity
                     System.out.print("ID: ");
                     valueInt = input.nextInt();
+                    input.nextLine();
                     System.out.print("Name: ");
                     valueSt = input.nextLine();
                     System.out.print("Type: ");
