@@ -8,4 +8,6 @@ import lombok.Data;
 public class User {
     private String userName;
     private String userPass;
+    private float userFunds;
+    Cart carrito;
 }
