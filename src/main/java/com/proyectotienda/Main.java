@@ -6,7 +6,7 @@ import java.util.Scanner;
 import com.proyectotienda.model.Product;
 
 public class Main {
-    
+    //Menu dedicated to accessing the app
     private static void menuAccess(){
         System.out.println("+------------+");
         System.out.println("|  APP MENU  |");
@@ -15,19 +15,18 @@ public class Main {
         System.out.println("2.Register");
         System.out.println("3.Exit");
     }
-
+    //Menu dedicated to logging within the app
     private static void menuLogged(){
         System.out.println("+------------+");
         System.out.println("|  APP MENU  |");
         System.out.println("+------------+");
-        System.out.println("1.Sign in");
-        System.out.println("2.Register");
-        System.out.println("3.Exit");
-        System.out.println("4.");
-        System.out.println("5.");
-        System.out.println("6.");
-        System.out.println("7.");
+        System.out.println("1.Account");
+        System.out.println("2.Products");
+        System.out.println("3.Cart");
+        System.out.println("4.Payment");
+        System.out.println("5.Exit");
     }
+
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         
@@ -35,6 +34,8 @@ public class Main {
         String valueSt = "";
         String valueSt2 = "";
         int valueInt = 0;
+        int valueInt2 = 0;
+        float valueFloat = 0;
 
         do {
             menuAccess();
@@ -45,7 +46,21 @@ public class Main {
             
             switch (answerSwitch) {
                 case 1:
-                    Product newProducto = new Product(valueSt,valueSt2,valueInt);            
+                    //ID , name , type , price, quantity
+                    System.out.print("ID: ");
+                    valueInt = input.nextInt();
+                    input.nextLine();
+                    System.out.print("Name: ");
+                    valueSt = input.nextLine();
+                    System.out.print("Type: ");
+                    valueSt = input.nextLine();
+                    System.out.print("Price: ");
+                    valueFloat = input.nextFloat();
+                    System.out.print("Quantity: ");
+                    valueInt2 = input.nextInt();
+
+                    Product newProducto = new Product(valueInt,valueSt,valueSt2,valueFloat,valueInt);
+                    System.out.println(newProducto);            
                     break;
                 case 2:
                     System.out.println("Wawa");
