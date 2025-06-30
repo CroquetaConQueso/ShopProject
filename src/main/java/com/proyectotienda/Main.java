@@ -27,11 +27,6 @@ public class Main {
         System.out.println("5.Exit");
     }
 
-    /*private static Product makingProduct(){
-
-        
-    }*/
-
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         
