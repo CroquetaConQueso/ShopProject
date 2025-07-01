@@ -1,11 +1,16 @@
 package com.proyectotienda;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import com.mysql.cj.jdbc.AbandonedConnectionCleanupThread;
 
 import com.proyectotienda.model.Product;
 import com.proyectotienda.model.User;
+import com.proyectotienda.repository.DBConnection;
+import com.proyectotienda.repository.UserDAO;
 
 public class Main {
     private static void menu() {
@@ -58,22 +63,37 @@ public class Main {
         return p;
     }
 
+    //Added logging to database, didn't have to change much the structure. To keep it working I had to add an empty constructor
     private static User valuesUser(Scanner input) {
-        String value1 = "";
-        String value2 = "";
-        float value3 = 0;
+        try (Connection connection = DBConnection.getConnection()) {
+            UserDAO userDAO = new UserDAO(connection);
+            String value1 = "";
+            String value2 = "";
+            float value3 = 0;
 
-        input.nextLine();
-        System.out.print("User Name: ");
-        value2 = input.nextLine();
-        System.out.print("User Pass: ");
-        value1 = input.nextLine();
-        System.out.print("User Funds: ");
-        value3 = input.nextFloat();
+            input.nextLine();
+            System.out.print("User Name: ");
+            value2 = input.nextLine();
+            System.out.print("User Pass: ");
+            value1 = input.nextLine();
+            System.out.print("User Funds: ");
+            value3 = input.nextFloat();
 
-        User s = User.builder().userName(value2).userPass(value1).userFunds(value3).build();
+            User s = User.builder().userName(value2).userPass(value1).userFunds(value3).build();
 
-        return s;
+            boolean success = userDAO.addUser(s);
+            System.out.println(success ? "User inserted" : "Failed to insert user");
+            if (!success) {
+                return null;
+            } else {
+                return s;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Connection error: " + e);
+            return null;
+        }
+
     }
 
     private static User modifyUser(Scanner input, User user) {
@@ -129,6 +149,14 @@ public class Main {
         }
     }
 
+    private static void attemptLog() {
+        try (Connection conn = DBConnection.getConnection()) {
+            System.out.println("Connected to MySQL successfully.");
+        } catch (SQLException e) {
+            System.out.println("Connection failed: " + e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         ArrayList<User> UserList = new ArrayList<>();
@@ -140,6 +168,8 @@ public class Main {
         int switchAnswer3 = 0;
 
         do {
+            //Here we try to log to the database
+            attemptLog();
             menu();
             System.out.print("Introduce a value found on the menu: ");
             try {
@@ -269,6 +299,7 @@ public class Main {
                     break;
             }
         } while (switchAnswer != 3);
+        AbandonedConnectionCleanupThread.checkedShutdown();
 
     }
 }

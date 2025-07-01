@@ -1,5 +1,5 @@
 package com.proyectotienda.repository;
-
+//Class to connect to the database
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
