@@ -8,6 +8,7 @@ public interface CartActions {
     void removeProduct(Product removeP);
     float calculateTotal();
     void emptyCart();
-
+    void showCart();
+    
     Map<Product, Integer> getProducts();
 }
