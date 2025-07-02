@@ -10,8 +10,16 @@ import com.mysql.cj.jdbc.AbandonedConnectionCleanupThread;
 import com.proyectotienda.model.Product;
 import com.proyectotienda.model.User;
 import com.proyectotienda.repository.DBConnection;
+import com.proyectotienda.repository.ProductDAO;
 import com.proyectotienda.repository.UserDAO;
 
+
+/*Cambiar logica del attemptlog a: 
+ * Connection attemptLog() que retorna conn, luego en main
+ * productDAO(?)
+ * userDAO(?)
+ * Puede que no sea tan útil
+*/
 public class Main {
     private static void menu() {
         System.out.println("Menu:");
@@ -26,7 +34,7 @@ public class Main {
         System.out.println("2.Delete User");
         System.out.println("3.Show Users");
         System.out.println("4.Modify User");
-        System.out.println("5.Exit");
+        System.out.println("5.Return to Main Menu");
     }
 
     private static void productMenu() {
@@ -38,32 +46,44 @@ public class Main {
     }
 
     private static Product valuesProduct(Scanner input) {
-        int value1 = 0;
-        String value2 = "";
-        String value3 = "";
-        float value4 = 0;
+        try (Connection connection = DBConnection.getConnection()) {
+            ProductDAO productDAO = new ProductDAO(connection);
+            int value1 = 0;
+            String value2 = "";
+            String value3 = "";
+            float value4 = 0;
 
-        input.nextLine();
-        System.out.print("Name: ");
-        value2 = input.nextLine();
-        System.out.print("Type: ");
-        value3 = input.nextLine();
-        System.out.print("Price: ");
-        value4 = input.nextFloat();
-        System.out.print("Quantity: ");
-        value1 = input.nextInt();
+            System.out.print("Name: ");
+            value2 = input.nextLine();
+            System.out.print("Type: ");
+            value3 = input.nextLine();
+            System.out.print("Price: ");
+            value4 = input.nextFloat();
+            System.out.print("Quantity: ");
+            value1 = input.nextInt();
 
-        Product p = Product.builder()
-                .productName(value2)
-                .productType(value3)
-                .productPrice(value4)
-                .productQuantity(value1)
-                .build();
+            Product p = Product.builder()
+                    .productName(value2)
+                    .productType(value3)
+                    .productPrice(value4)
+                    .productQuantity(value1)
+                    .build();
 
-        return p;
+            boolean success = productDAO.addProduct(p);
+            System.out.println(success ? "Product was added succesfully" : "Product was not able to be added");
+            if (!success) {
+                return null;
+            } else {
+                return p;
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection error: " + e.getMessage());
+            return null;
+        }
     }
 
-    //Added logging to database, didn't have to change much the structure. To keep it working I had to add an empty constructor
+    // Added logging to database, didn't have to change much the structure. To keep
+    // it working I had to add an empty constructor
     private static User valuesUser(Scanner input) {
         try (Connection connection = DBConnection.getConnection()) {
             UserDAO userDAO = new UserDAO(connection);
@@ -90,7 +110,7 @@ public class Main {
             }
 
         } catch (SQLException e) {
-            System.out.println("Connection error: " + e);
+            System.out.println("Connection error: " + e.getMessage());
             return null;
         }
 
@@ -149,11 +169,13 @@ public class Main {
         }
     }
 
-    private static void attemptLog() {
+    private static boolean attemptLog() {
         try (Connection conn = DBConnection.getConnection()) {
             System.out.println("Connected to MySQL successfully.");
+            return true;
         } catch (SQLException e) {
             System.out.println("Connection failed: " + e.getMessage());
+            return false;
         }
     }
 
@@ -167,138 +189,141 @@ public class Main {
         int switchAnswer2 = 0;
         int switchAnswer3 = 0;
 
-        do {
-            //Here we try to log to the database
-            attemptLog();
-            menu();
-            System.out.print("Introduce a value found on the menu: ");
-            try {
-                switchAnswer = input.nextInt();
-                input.nextLine();
-            } catch (InputMismatchException e) {
-                System.out.println("Introduce a number");
-            }
+        if (attemptLog()) {
+            do {
+                // Here we try to log to the database
+                menu();
+                System.out.print("Introduce a value found on the menu: ");
+                try {
+                    switchAnswer = input.nextInt();
+                    input.nextLine();
+                } catch (InputMismatchException e) {
+                    System.out.println("Introduce a number");
+                }
 
-            switch (switchAnswer) {
-                case 1:
-                    do {
-                        userMenu();
-                        System.out.print("Introduce a value from on the User Menu: ");
-                        try {
-                            switchAnswer2 = input.nextInt();
-                        } catch (InputMismatchException e) {
-                            System.out.println(e);
-                            input.nextLine();
-                        }
+                switch (switchAnswer) {
+                    case 1:
+                        do {
+                            userMenu();
+                            System.out.print("Introduce a value from on the User Menu: ");
+                            try {
+                                switchAnswer2 = input.nextInt();
+                            } catch (InputMismatchException e) {
+                                System.out.println(e);
+                                input.nextLine();
+                            }
 
-                        switch (switchAnswer2) {
-                            // 1 Create 2 Delete 3 Show 4 Modify 5 Exit
-                            case 1:
-                                System.out.println("Creating User");
-                                s = valuesUser(input);
-                                if (UserList.contains(s)) {
-                                    System.out.println("An user with that name already exists");
-                                } else {
-                                    UserList.add(s);
-                                    System.out.println("User added to the database");
-                                }
-                                break;
-                            case 2:
-                                if (userListCheck(UserList)) {
-                                    input.nextLine();
-                                    System.out.println("Introduce the name of the user that you want to delete: ");
-                                    String SearchUser = input.nextLine();
-
-                                    boolean userCheck = UserList
-                                            .removeIf(user -> user.getUserName().equals(SearchUser));
-
-                                    if (!userCheck) {
-                                        System.out.println("The user was not able to be deleted");
+                            switch (switchAnswer2) {
+                                // 1 Create 2 Delete 3 Show 4 Modify 5 Exit
+                                case 1:
+                                    System.out.println("Creating User");
+                                    s = valuesUser(input);
+                                    if (UserList.contains(s)) {
+                                        System.out.println("An user with that name already exists");
                                     } else {
-                                        System.out.println("The user with the name " + SearchUser + " was deleted");
+                                        UserList.add(s);
+                                        System.out.println("User added to the database");
                                     }
-                                }
-                                break;
-                            case 3:
-                                if (userListCheck(UserList)) {
-                                    for (User user : UserList) {
-                                        System.out.println(user);
-                                    }
-                                }
-                                break;
-                            case 4:
-                                if (userListCheck(UserList)) {
-                                    System.out.println("Introduce the name of the user that you want to modify ");
-                                    input.nextLine();
-                                    searchUser = input.nextLine();
-                                    for (User user : UserList) {
-                                        if (user.getUserName().equals(searchUser)) {
-                                            modifyUser(input, user);
+                                    break;
+                                case 2:
+                                    if (userListCheck(UserList)) {
+                                        input.nextLine();
+                                        System.out.println("Introduce the name of the user that you want to delete: ");
+                                        String SearchUser = input.nextLine();
+
+                                        boolean userCheck = UserList
+                                                .removeIf(user -> user.getUserName().equals(SearchUser));
+
+                                        if (!userCheck) {
+                                            System.out.println("The user was not able to be deleted");
+                                        } else {
+                                            System.out.println("The user with the name " + SearchUser + " was deleted");
                                         }
                                     }
-                                }
-                                break;
-                            case 5:
-                                System.out.println("Returning to the main menu..");
-                                break;
-                            default:
-                                System.out.println("Use a value found on the User Menu");
-                                break;
-                        }
-                    } while (switchAnswer2 != 5);
-                    break;
-                case 2:
-                    User logUser = null;
-                    do {
-                        System.out.println("Introduce the name of an user");
-                        String userNameCheck = input.nextLine();
-
-                        for (User user : UserList) {
-                            if (user.getUserName().equals(userNameCheck)) {
-                                System.out.println("You have logged with the user " + userNameCheck);
-                                logUser = user;
+                                    break;
+                                case 3:
+                                    if (userListCheck(UserList)) {
+                                        for (User user : UserList) {
+                                            System.out.println(user);
+                                        }
+                                    }
+                                    break;
+                                case 4:
+                                    if (userListCheck(UserList)) {
+                                        System.out.println("Introduce the name of the user that you want to modify ");
+                                        input.nextLine();
+                                        searchUser = input.nextLine();
+                                        for (User user : UserList) {
+                                            if (user.getUserName().equals(searchUser)) {
+                                                modifyUser(input, user);
+                                            }
+                                        }
+                                    }
+                                    break;
+                                case 5:
+                                    System.out.println("Returning to the main menu..");
+                                    break;
+                                default:
+                                    System.out.println("Use a value found on the User Menu");
+                                    break;
                             }
-                        }
+                        } while (switchAnswer2 != 5);
+                        break;
+                    case 2:
+                        User logUser = null;
+                        do {
+                            System.out.print("Introduce the name of an user: ");
+                            String userNameCheck = input.nextLine();
 
-                        if (logUser == null | userNameCheck == "exit") {
-                            System.out.println("The user was not found, returning to the main menu.");
-                            break;
-                        }
-                    } while (logUser == null);
-                    do {
-                        productMenu();
-                        System.out.println("Option: ");
-                        switchAnswer3 = input.nextInt();
-                        input.nextLine();
-                        switch (switchAnswer3) {
-                            case 1:
-                                System.out.println("Creating product");
-                                p = valuesProduct(input);
-                                logUser.getUserCart().addProduct(p);
-                                break;
-                            case 2:
-                                System.out.println("wawa");
-                                break;
-                            case 3:
-                                logUser.getUserCart().showCart();
-                                break;
-                            case 4:
-                                System.out.println("wewe");
-                                break;
-                            default:
-                                System.out.println("Introduce a value found on the menu");
-                                break;
-                        }
-                    } while (switchAnswer3 != 4);
-                    break;
-                case 3:
+                            for (User user : UserList) {
+                                if (user.getUserName().equals(userNameCheck)) {
+                                    System.out.println("You have logged with the user " + userNameCheck);
+                                    logUser = user;
+                                }
+                            }
 
-                    break;
-                default:
-                    System.out.println("Introduce a value found on the menu");
-                    break;
-            }
-        } while (switchAnswer != 3);
+                            if (logUser == null || userNameCheck.equals("exit")) {
+                                System.out.println("The user was not found, returning to the main menu.");
+                                break;
+                            }
+                        } while (logUser == null);
+                        do {
+                            productMenu();
+                            System.out.print("Option: ");
+                            switchAnswer3 = input.nextInt();
+                            input.nextLine();
+                            switch (switchAnswer3) {
+                                case 1:
+                                    System.out.println("Creating product");
+                                    p = valuesProduct(input);
+                                    logUser.getUserCart().addProduct(p);
+                                    break;
+                                case 2:
+                                    System.out.println("wawa");
+                                    break;
+                                case 3:
+                                    logUser.getUserCart().showCart();
+                                    break;
+                                case 4:
+                                    System.out.println("Returning to the main menu");
+                                    break;
+                                default:
+                                    System.out.println("Introduce a value found on the menu");
+                                    break;
+                            }
+                        } while (switchAnswer3 != 4);
+                        break;
+                    case 3:
+
+                        break;
+                    default:
+                        System.out.println("Introduce a value found on the menu");
+                        break;
+                }
+            } while (switchAnswer != 3);
+        } else {
+            System.out.println("There's a problem with the database, contact or wait for maintenence to address it");
+        }
         AbandonedConnectionCleanupThread.checkedShutdown();
 
     }

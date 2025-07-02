@@ -1,7 +1,9 @@
 package com.proyectotienda.repository;
-//Class to build the user
+//Class to build the User in the DataBase
 import com.proyectotienda.model.User;
 import java.sql.*;
+
+// TODO : Display all users from the DB, remove User, modify User
 
 public class UserDAO {
     private final Connection conn;
@@ -32,4 +34,5 @@ public class UserDAO {
         }
         return false;
     }
+
 }
