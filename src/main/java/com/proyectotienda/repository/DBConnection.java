@@ -18,6 +18,7 @@ public class DBConnection {
             String password = props.getProperty("db.password");  
             
             return DriverManager.getConnection(url, user, password);
+            
             }catch(Exception e){
                 throw new SQLException("Connection failed: "+e.getMessage());
             }
