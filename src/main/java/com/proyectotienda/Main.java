@@ -13,7 +13,6 @@ import com.proyectotienda.repository.DBConnection;
 import com.proyectotienda.repository.ProductDAO;
 import com.proyectotienda.repository.UserDAO;
 
-
 /*Cambiar logica del attemptlog a: 
  * Connection attemptLog() que retorna conn, luego en main
  * productDAO(?)
@@ -45,9 +44,7 @@ public class Main {
         System.out.println("4.Return to Main Menu");
     }
 
-    private static Product valuesProduct(Scanner input) {
-        try (Connection connection = DBConnection.getConnection()) {
-            ProductDAO productDAO = new ProductDAO(connection);
+    private static Product valuesProduct(Scanner input,ProductDAO productDAO) {
             int value1 = 0;
             String value2 = "";
             String value3 = "";
@@ -55,38 +52,38 @@ public class Main {
 
             System.out.print("Name: ");
             value2 = input.nextLine();
-            System.out.print("Type: ");
-            value3 = input.nextLine();
-            System.out.print("Price: ");
-            value4 = input.nextFloat();
-            System.out.print("Quantity: ");
-            value1 = input.nextInt();
+            boolean checkProduct = productDAO.checkProduct(value3);
+            if (!checkProduct) {
+                System.out.print("Type: ");
+                value3 = input.nextLine();
+                System.out.print("Price: ");
+                value4 = input.nextFloat();
+                System.out.print("Quantity: ");
+                value1 = input.nextInt();
 
-            Product p = Product.builder()
-                    .productName(value2)
-                    .productType(value3)
-                    .productPrice(value4)
-                    .productQuantity(value1)
-                    .build();
+                Product p = Product.builder()
+                        .productName(value2)
+                        .productType(value3)
+                        .productPrice(value4)
+                        .productQuantity(value1)
+                        .build();
 
-            boolean success = productDAO.addProduct(p);
-            System.out.println(success ? "Product was added succesfully" : "Product was not able to be added");
-            if (!success) {
-                return null;
+                boolean success = productDAO.addProduct(p);
+                System.out.println(success ? "Product was added succesfully" : "Product was not able to be added");
+                if (!success) {
+                    return null;
+                } else {
+                    return p;
+                }
             } else {
-                return p;
+                System.out.println("A product with that name already exists in the database");
+                return null;
             }
-        } catch (SQLException e) {
-            System.out.println("Connection error: " + e.getMessage());
-            return null;
-        }
     }
 
     // Added logging to database, didn't have to change much the structure. To keep
     // it working I had to add an empty constructor
-    private static User valuesUser(Scanner input) {
-        try (Connection connection = DBConnection.getConnection()) {
-            UserDAO userDAO = new UserDAO(connection);
+    private static User valuesUser(Scanner input, UserDAO userDAO) {
             String value1 = "";
             String value2 = "";
             float value3 = 0;
@@ -94,25 +91,27 @@ public class Main {
             input.nextLine();
             System.out.print("User Name: ");
             value2 = input.nextLine();
-            System.out.print("User Pass: ");
-            value1 = input.nextLine();
-            System.out.print("User Funds: ");
-            value3 = input.nextFloat();
+            boolean checkUser = userDAO.checkUser(value2);
+            if (!checkUser) {
+                System.out.print("User Pass: ");
+                value1 = input.nextLine();
+                System.out.print("User Funds: ");
+                value3 = input.nextFloat();
 
-            User s = User.builder().userName(value2).userPass(value1).userFunds(value3).build();
+                User s = User.builder().userName(value2).userPass(value1).userFunds(value3).build();
 
-            boolean success = userDAO.addUser(s);
-            System.out.println(success ? "User inserted" : "Failed to insert user");
-            if (!success) {
-                return null;
+                boolean success = userDAO.addUser(s);
+                System.out.println(success ? "User inserted" : "Failed to insert user");
+                if (!success) {
+                    return null;
+                } else {
+                    return s;
+                }
             } else {
-                return s;
+                System.out.println("An user with that name already exists in the database");
+                return null;
             }
 
-        } catch (SQLException e) {
-            System.out.println("Connection error: " + e.getMessage());
-            return null;
-        }
 
     }
 
@@ -169,27 +168,23 @@ public class Main {
         }
     }
 
-    private static boolean attemptLog() {
-        try (Connection conn = DBConnection.getConnection()) {
-            System.out.println("Connected to MySQL successfully.");
-            return true;
-        } catch (SQLException e) {
-            System.out.println("Connection failed: " + e.getMessage());
-            return false;
-        }
-    }
-
     public static void main(String[] args) {
+        Connection conn = null;
         Scanner input = new Scanner(System.in);
         ArrayList<User> UserList = new ArrayList<>();
         User s = null;
+        UserDAO userDAO = new UserDAO(conn);
+        ProductDAO productDAO = new ProductDAO(conn);
         Product p;
         String searchUser = "";
         int switchAnswer = 0;
         int switchAnswer2 = 0;
         int switchAnswer3 = 0;
 
-        if (attemptLog()) {
+        try {
+            conn = DBConnection.getConnection();
+       
+        if (conn != null) {
             do {
                 // Here we try to log to the database
                 menu();
@@ -217,13 +212,7 @@ public class Main {
                                 // 1 Create 2 Delete 3 Show 4 Modify 5 Exit
                                 case 1:
                                     System.out.println("Creating User");
-                                    s = valuesUser(input);
-                                    if (UserList.contains(s)) {
-                                        System.out.println("An user with that name already exists");
-                                    } else {
-                                        UserList.add(s);
-                                        System.out.println("User added to the database");
-                                    }
+                                    s = valuesUser(input,userDAO);
                                     break;
                                 case 2:
                                     if (userListCheck(UserList)) {
@@ -270,23 +259,12 @@ public class Main {
                         } while (switchAnswer2 != 5);
                         break;
                     case 2:
-                        User logUser = null;
                         do {
                             System.out.print("Introduce the name of an user: ");
                             String userNameCheck = input.nextLine();
 
-                            for (User user : UserList) {
-                                if (user.getUserName().equals(userNameCheck)) {
-                                    System.out.println("You have logged with the user " + userNameCheck);
-                                    logUser = user;
-                                }
-                            }
-
-                            if (logUser == null || userNameCheck.equals("exit")) {
-                                System.out.println("The user was not found, returning to the main menu.");
-                                break;
-                            }
-                        } while (logUser == null);
+                            s = userDAO.logUserDao(userNameCheck);
+                        } while (s == null);
                         do {
                             productMenu();
                             System.out.print("Option: ");
@@ -295,14 +273,14 @@ public class Main {
                             switch (switchAnswer3) {
                                 case 1:
                                     System.out.println("Creating product");
-                                    p = valuesProduct(input);
-                                    logUser.getUserCart().addProduct(p);
+                                    p = valuesProduct(input, productDAO);
+                                    s.getUserCart().addProduct(p);
                                     break;
                                 case 2:
                                     System.out.println("wawa");
                                     break;
                                 case 3:
-                                    logUser.getUserCart().showCart();
+                                    s.getUserCart().showCart();
                                     break;
                                 case 4:
                                     System.out.println("Returning to the main menu");
@@ -323,6 +301,14 @@ public class Main {
             } while (switchAnswer != 3);
         } else {
             System.out.println("There's a problem with the database, contact or wait for maintenence to address it");
+        } } catch (SQLException e) {
+            System.out.println("Error with the database: "+e.getMessage());
+        }finally{
+            try{
+                if(conn != null && !conn.isClosed()) conn.close();
+            }catch(SQLException e){
+                System.out.println("Error closing DB Connection");
+            }
         }
         AbandonedConnectionCleanupThread.checkedShutdown();
 
