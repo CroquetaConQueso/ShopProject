@@ -61,7 +61,7 @@ public class UserDAO {
         }
     }
 
-    public boolean modifyUser(String nName, String nPass, float nFunds, String oldName) {
+    public void modifyUser(String nName, String nPass, float nFunds, String oldName) {
         // The "?" establish the order of the parameters, the first ? establishes that
         // parameterIndex one from stmt.setString will use that value
         String sql = "UPDATE users SET user_name = ?, user_pass = ? , user_funds = ? WHERE user_name = ?";
@@ -76,19 +76,16 @@ public class UserDAO {
 
             if (rowsAffected > 0) {
                 System.out.println("The user has been updated");
-                return true;
             } else {
                 System.out.println("The user was not able to be updated");
-                return false;
             }
 
         } catch (SQLException e) {
             System.out.println("Error trying to update the user: " + e.getMessage());
-            return false;
         }
     }
 
-    public boolean dropUser(String userName) {
+    public void dropUser(String userName) {
         String sql = "DELETE FROM users where user_name = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -97,14 +94,11 @@ public class UserDAO {
 
             if (rowsAffected > 0) {
                 System.out.println("The user with the name " + userName + " was deleted");
-                return true;
             } else {
-                System.out.println("The user with the name " + userName + " was not able to be found");
-                return false;
+                System.out.println("The user with the name " + userName + " was not found");
             }
         } catch (SQLException e) {
             System.out.println("Error with the database while trying to connect to delete an user " + e.getMessage());
-            return false;
         }
     }
 

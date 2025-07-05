@@ -27,6 +27,7 @@ public class ProductDAO {
                 if (rs.next()) {
                     product.setProductId(rs.getInt(1));
                 }
+                System.out.println("The product was added");
                 return true;
             }
         } catch (SQLException e) {
