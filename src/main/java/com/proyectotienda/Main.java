@@ -200,7 +200,7 @@ public class Main {
                     case 1:
                         do {
                             userMenu();
-                            System.out.print("Introduce a value from on the User Menu: ");
+                            System.out.print("Introduce a value from the User Menu: ");
                             try {
                                 switchAnswer2 = input.nextInt();
                             } catch (InputMismatchException e) {
