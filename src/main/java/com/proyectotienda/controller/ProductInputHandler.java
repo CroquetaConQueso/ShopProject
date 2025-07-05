@@ -14,28 +14,28 @@ public class ProductInputHandler {
         this.input = input;
     }
 
-    public String getValidatedName() {
-        System.out.print("Introduce the name of the product");
+    public String getValidatedName(String pName) {
+        System.out.print(pName);
         String name = input.nextLine();
 
         if (name.matches("^[a-zA-Z0-9]+")) {
             if (name.length() < 3) {
                 System.out.println("The product needs to have more than or 3 characters");
-                return getValidatedName();
+                return getValidatedName(pName);
             } else if (name.length() > 100) {
                 System.out.println("The name of the product can't be longer than 100 characters");
-                return getValidatedName();
+                return getValidatedName(pName);
             } else {
                 return name;
             }
         } else {
             System.out.println("The name can only contain alphanumerical characters");
-            return getValidatedName();
+            return getValidatedName(pName);
         }
     }
 
-    public String getValidatedType() {
-        System.out.println("Lists of types products: ");
+    public String getValidatedType(String pType) {
+        System.out.println(pType);
         for (int i = 0; i < productList.length; i++) {
             System.out.println(productList[i]);
         }
@@ -53,23 +53,23 @@ public class ProductInputHandler {
         }
 
         System.out.println("The type must be one of the allowed types");
-        return getValidatedType();
+        return getValidatedType(pType);
 
     }
 
-    public float getValidatedPrice() {
+    public float getValidatedPrice(String pPrice) {
         System.out.println("Introduce the price: ");
         String price = input.nextLine().replace(',', '.');
 
         if (!price.matches("^\\d+(\\.\\d{1,2})?$")) {
             System.out.println("Invalid funds format. Only numbers with up to two decimal places are allowed.");
-            return getValidatedPrice();
+            return getValidatedPrice(pPrice);
         }
         float convertedPrice = Float.parseFloat(price);
 
         if (convertedPrice <= 0) {
             System.out.println("The product can't be free");
-            return getValidatedPrice();
+            return getValidatedPrice(pPrice);
         }
 
         return convertedPrice;

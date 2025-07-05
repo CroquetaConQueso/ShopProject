@@ -14,9 +14,14 @@ public class ProductController {
     }
 
     public Product createProduct() {
-        Product product = Product.builder().productName(productInputHandler.getValidatedName())
-                .productType(productInputHandler.getValidatedType())
-                .productPrice(productInputHandler.getValidatedPrice()).build();
+        String pName = "Introduce the name of the product:" ;
+        String pType = "Introduce the type of the product: ";
+        String pPrice = "Introduce the price of the product: ";
+
+
+        Product product = Product.builder().productName(productInputHandler.getValidatedName(pName))
+                .productType(productInputHandler.getValidatedType(pType))
+                .productPrice(productInputHandler.getValidatedPrice(pPrice)).build();
         boolean check = productDAO.addProduct(product);
 
         if(!check){
@@ -25,5 +30,17 @@ public class ProductController {
         }
 
         return product;
+    }
+
+    public void deleteProduct(){
+        String pName = "Introduce the name of the product that you wish to delete: " ;
+        String name = productInputHandler.getValidatedName(pName);
+
+        if(!productDAO.checkProduct(name)){
+            System.out.println("The name of the product wasn't found");
+        }else{
+            productDAO.dropProduct(name);
+        }
+        
     }
 }
