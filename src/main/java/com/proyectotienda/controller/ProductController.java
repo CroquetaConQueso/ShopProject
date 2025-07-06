@@ -2,6 +2,7 @@ package com.proyectotienda.controller;
 
 //It will control the flow of the creation and the connectivity of all the other Product classes
 import com.proyectotienda.model.Product;
+import com.proyectotienda.model.User;
 import com.proyectotienda.repository.ProductDAO;
 
 public class ProductController {
@@ -32,6 +33,12 @@ public class ProductController {
         return product;
     }
 
+    public void checkTypesProducts(){
+        String typePrompt = "List of the possible types of products: "; 
+        String tName = productInputHandler.getValidatedType(typePrompt);
+        productDAO.listingTypesProducts(tName);
+    }
+
     public void deleteProduct(){
         String pName = "Introduce the name of the product that you wish to delete: " ;
         String name = productInputHandler.getValidatedName(pName);
@@ -43,4 +50,23 @@ public class ProductController {
         }
         
     }
+
+    public void userBuysProduct(User loggedUser){
+        String promptBuy = "Introduce the name of the product that you want to buy: ";
+        String nPro = productInputHandler.getValidatedName(promptBuy);
+
+        System.out.println("How many do you want to buy?");
+        int qPro = productInputHandler.getValidatedQuantity();
+
+        Product p = productDAO.buyProduct(nPro,qPro);
+        if (loggedUser.getUserFunds() >= (p.getProductPrice()*p.getProductQuantity())) {
+            loggedUser.setUserFunds(loggedUser.getUserFunds()-(p.getProductPrice()*p.getProductQuantity()));
+            loggedUser.getUserCart().addProduct(p);
+            
+            System.out.println("You bought "+p.getProductQuantity()+ " units of " + p.getProductName() + "for the price of "
+                            + p.getProductPrice() + "\n\nNow you have " + loggedUser.getUserFunds() + "e left");
+            
+        }
+    }
+                        
 }

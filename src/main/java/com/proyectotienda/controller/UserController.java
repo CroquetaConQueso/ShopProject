@@ -35,7 +35,7 @@ public class UserController {
         String name = userInputHandler.getValidatedName(namePrompt);
 
         if (!userDAO.checkUser(name)) {
-            System.out.println("");
+            System.out.println("The username doesn't exist in the database");
             return null;
         }
 

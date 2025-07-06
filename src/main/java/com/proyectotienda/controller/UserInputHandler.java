@@ -25,7 +25,6 @@ public class UserInputHandler {
 
     public String getValidatedPassword(String prompt) {
         System.out.print(prompt);
-        String specialchars = "%$~&@";
         String password = input.nextLine();
         if (password.length() < 7) {
             System.out.println("The password can't have less than 7 characters");
@@ -35,8 +34,8 @@ public class UserInputHandler {
             return getValidatedPassword(prompt);
         }
         for (int i = 0; i < password.length(); i++) {
-            if (password.contains(String.valueOf(specialchars.charAt(i)))) {
-                System.out.println("The password can't have any of these characters: " + specialchars);
+            if (!Character.isLetterOrDigit(password.charAt(i))) {
+                System.out.println("The password can only have letters or numbers");
                 return getValidatedPassword(prompt);
             }
         }
@@ -47,7 +46,7 @@ public class UserInputHandler {
     }
 
     public float getValidatedFunds(String prompt) {
-        System.out.println(prompt);
+        System.out.print(prompt);
         String funds = input.nextLine().replace(',', '.');
 
         if (!funds.matches("^\\d+(\\.\\d{1,2})?$")) {
