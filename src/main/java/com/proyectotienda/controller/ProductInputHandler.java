@@ -1,13 +1,13 @@
 package com.proyectotienda.controller;
 
+import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ProductInputHandler {
     private final Scanner input;
     private String[] productList = {
-            "Fruits", "Fish", "Vegetables", "Meat",
-            "Dairy", "Bakery", "Snacks", "Beverages",
-            "Frozen", "Canned", "Grains", "Spices"
+            "Electronics", "Clothing", "Books", "Home", "Toys", "Fish", "Meat", "Vegetables"
     };
 
     public ProductInputHandler(Scanner input) {
@@ -58,7 +58,7 @@ public class ProductInputHandler {
     }
 
     public float getValidatedPrice(String pPrice) {
-        System.out.println("Introduce the price: ");
+        System.out.print("Introduce the price: ");
         String price = input.nextLine().replace(',', '.');
 
         if (!price.matches("^\\d+(\\.\\d{1,2})?$")) {
@@ -73,5 +73,22 @@ public class ProductInputHandler {
         }
 
         return convertedPrice;
+    }
+
+    public int getValidatedQuantity() {
+        while (true) {
+            try {
+                int quantity = -1;
+                quantity = input.nextInt();
+                if (quantity < 0) {
+                    System.out.println("The quantity can't be negative");
+
+                } else {
+                    return quantity;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("You must enter a number " + e.getMessage());
+            }
+        }
     }
 }
