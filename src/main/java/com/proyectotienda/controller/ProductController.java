@@ -76,6 +76,7 @@ public class ProductController {
         }else{System.out.println("You do not have enough funds to buy what you want!");}
     }
 
+    //User RemovesProducts needs to be overhauled and most likely the 1.0.0 version will be done
     public void userRemovesProduct(User loggedUser){
         if(loggedUser.getUserCart().getProducts().isEmpty()){
             System.out.println("You must get a product first before deleting it");
@@ -83,13 +84,13 @@ public class ProductController {
             String prompt = "Name of the product that you wish to remove: ";
             String pName = productInputHandler.getValidatedName(prompt);
 
-            productDAO.addProduct(null)
+            productDAO.addProduct(null);
             loggedUser.getUserCart().removeProduct(null, 0);
     }
     }
 
     public void showAllProducts(){
-        
+        productDAO.showProducts();
     }
 
                         

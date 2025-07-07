@@ -121,7 +121,7 @@ public class Main {
                                         s.getUserCart().removeProduct(p, switchAnswer2);
                                         break;
                                     case 3:
-                                        
+                                        productController.showAllProducts();
                                         break;
                                     case 4:
                                         s.getUserCart().showCart();
