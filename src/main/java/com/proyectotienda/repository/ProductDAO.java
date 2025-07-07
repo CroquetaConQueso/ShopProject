@@ -124,7 +124,7 @@ public class ProductDAO {
         }
     }
 
-    public Product buyProduct(String productToBuy,int pQuantity) {
+    public Product buyProduct(String productToBuy, int pQuantity) {
         String sql = "SELECT id,name,type,price from products where name = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -140,6 +140,23 @@ public class ProductDAO {
         } catch (SQLException e) {
             System.out.println("Error while trying to obtain a product to buy : " + e.getMessage());
             return null;
+        }
+    }
+
+    public void showProducts() {
+        String sql = "SELECT VALUES(name,type,price) from products";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            if (rs != null) {
+                while (rs.next()) {
+                    System.out.println(
+                            "Name: " + rs.getString(1) + " | Type: " + rs.getString(2) + " | Price: " + rs.getFloat(3));
+                }
+            } else {
+                System.out.println("There are no products to show in the database");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error accessing the data base to show all the products: " + e.getMessage());
         }
     }
 

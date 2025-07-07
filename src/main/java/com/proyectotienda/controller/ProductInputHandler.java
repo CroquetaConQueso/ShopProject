@@ -74,21 +74,22 @@ public class ProductInputHandler {
 
         return convertedPrice;
     }
-
-    public int getValidatedQuantity() {
-        while (true) {
-            try {
-                int quantity = -1;
-                quantity = input.nextInt();
-                if (quantity < 0) {
-                    System.out.println("The quantity can't be negative");
-
-                } else {
-                    return quantity;
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("You must enter a number " + e.getMessage());
-            }
-        }
-    }
+    /*
+     * public int getValidatedQuantity() {
+     * while (true) {
+     * try {
+     * int quantity = -1;
+     * quantity = input.nextInt();
+     * if (quantity < 0) {
+     * System.out.println("The quantity can't be negative");
+     * 
+     * } else {
+     * return quantity;
+     * }
+     * } catch (InputMismatchException e) {
+     * System.out.println("You must enter a number " + e.getMessage());
+     * }
+     * }
+     * }
+     */
 }

@@ -42,10 +42,11 @@ public class Main {
 
     private static void productMenu() {
         System.out.println("Product Menu");
-        System.out.println("1.Add Product");
+        System.out.println("1.Buy Product");
         System.out.println("2.Remove Product");
-        System.out.println("3.Show User Cart");
-        System.out.println("4.Return to Main Menu");
+        System.out.println("3.Show products");
+        System.out.println("4.Show User Cart");
+        System.out.println("5.Return to Main Menu");
     }
 
     private static boolean userListCheck(ArrayList<User> userList) {
@@ -100,7 +101,7 @@ public class Main {
                             s = userController.logginUser();
                             System.out.println("You have logged succesfully as " + s.getUserName());
                             UserList.add(s);
-
+                            s.setUserCart(userCart);
                             do {
                                 productMenu();
                                 System.out.print("Choose an option: ");
@@ -113,25 +114,25 @@ public class Main {
                                 switch (switchAnswer2) {
                                     case 1:
                                         System.out.println();
-                                        p = productController.createProduct();
-                                        userCart.addProduct(p);
-                                        s.setUserCart(userCart);
-                                        System.out.println(s);
+                                        productController.userBuysProduct(s);
                                         break;
                                     case 2:
-                                        productController.checkTypesProducts();
+                                        System.out.println("Nombre del producto que vas a eliminar");
+                                        s.getUserCart().removeProduct(p, switchAnswer2);
                                         break;
                                     case 3:
-                                        userCart = s.getUserCart();
-                                        System.out.println(userCart.getProducts());
+                                        productController.showAllProducts();
                                         break;
                                     case 4:
+                                        s.getUserCart().showCart();
+                                        break;
+                                    case 5:
                                         System.out.println("Returning to the main menu..");
                                         break;
                                     default:
                                         break;
                                 }
-                            } while (switchAnswer2 != 4);
+                            } while (switchAnswer2 != 5);
                             break;
                         case 2:
                             System.out.println("Creating User");
