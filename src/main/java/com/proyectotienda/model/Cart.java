@@ -7,14 +7,14 @@ public class Cart implements CartActions {
     private Map<Product, Integer> products = new HashMap<>();
 
     @Override
-    public void addProduct(Product addP) {
-        products.merge(addP, 1, Integer::sum);
+    public void addProduct(Product addP, int quantity) {
+        products.merge(addP, quantity, Integer::sum);
     }
 
     @Override
-    public void removeProduct(Product removeP) {
+    public void removeProduct(Product removeP, int rmQ) {
         if (products.containsKey(removeP)) {
-            products.computeIfPresent(removeP, (k, v) -> v > 1 ? v - 1 : null);
+            products.computeIfPresent(removeP, (k, v) -> v > rmQ ? v - rmQ : null);
         }
     }
 
@@ -36,7 +36,7 @@ public class Cart implements CartActions {
             System.out.println("Cart is empty.");
         } else {
             for (Map.Entry<Product, Integer> entry : products.entrySet()) {
-                System.out.println(entry.getKey() + " | Quantity: " + entry.getValue());
+                System.out.println(entry.getKey() + " | Quantity: " + entry.getValue()+" | Total: "+entry.getKey().getProductPrice()*entry.getValue());
             }
         }
     }

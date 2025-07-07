@@ -56,7 +56,7 @@ public class ProductController {
         String nPro = productInputHandler.getValidatedName(promptBuy);
 
         System.out.println("How many do you want to buy?");
-        int qPro = productInputHandler.getValidatedQuantity();
+        int qPro = 
 
         Product p = productDAO.buyProduct(nPro,qPro);
         if (loggedUser.getUserFunds() >= (p.getProductPrice()*p.getProductQuantity())) {

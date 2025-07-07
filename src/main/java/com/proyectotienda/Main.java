@@ -100,7 +100,7 @@ public class Main {
                             s = userController.logginUser();
                             System.out.println("You have logged succesfully as " + s.getUserName());
                             UserList.add(s);
-
+                            s.setUserCart(userCart);
                             do {
                                 productMenu();
                                 System.out.print("Choose an option: ");
@@ -114,8 +114,7 @@ public class Main {
                                     case 1:
                                         System.out.println();
                                         p = productController.createProduct();
-                                        userCart.addProduct(p);
-                                        s.setUserCart(userCart);
+                                        s.getUserCart().addProduct(p);
                                         System.out.println(s);
                                         break;
                                     case 2:
