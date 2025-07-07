@@ -1,9 +1,13 @@
 package com.proyectotienda.controller;
 
+
+import java.util.Scanner;
+
 //It will control the flow of the creation and the connectivity of all the other Product classes
 import com.proyectotienda.model.Product;
 import com.proyectotienda.model.User;
 import com.proyectotienda.repository.ProductDAO;
+import com.proyectotienda.repository.CartDAO;
 
 public class ProductController {
     private final ProductDAO productDAO;
@@ -54,19 +58,39 @@ public class ProductController {
     public void userBuysProduct(User loggedUser){
         String promptBuy = "Introduce the name of the product that you want to buy: ";
         String nPro = productInputHandler.getValidatedName(promptBuy);
+        Scanner input = new Scanner(System.in);
 
         System.out.println("How many do you want to buy?");
-        int qPro = 
+        int qPro = input.nextInt();
+        input.close();
 
         Product p = productDAO.buyProduct(nPro,qPro);
         if (loggedUser.getUserFunds() >= (p.getProductPrice()*p.getProductQuantity())) {
             loggedUser.setUserFunds(loggedUser.getUserFunds()-(p.getProductPrice()*p.getProductQuantity()));
-            loggedUser.getUserCart().addProduct(p);
+            //Had to add a new value to have it be passed to the add methode
+            loggedUser.getUserCart().addProduct(p,qPro);
             
-            System.out.println("You bought "+p.getProductQuantity()+ " units of " + p.getProductName() + "for the price of "
+            System.out.println("You bought "+loggedUser.getUserCart().getProducts().get(p)+ " units of " + p.getProductName() + "for the price of "
                             + p.getProductPrice() + "\n\nNow you have " + loggedUser.getUserFunds() + "e left");
             
-        }
+        }else{System.out.println("You do not have enough funds to buy what you want!");}
     }
+
+    public void userRemovesProduct(User loggedUser){
+        if(loggedUser.getUserCart().getProducts().isEmpty()){
+            System.out.println("You must get a product first before deleting it");
+        }else{
+            String prompt = "Name of the product that you wish to remove: ";
+            String pName = productInputHandler.getValidatedName(prompt);
+
+            productDAO.addProduct(null)
+            loggedUser.getUserCart().removeProduct(null, 0);
+    }
+    }
+
+    public void showAllProducts(){
+        
+    }
+
                         
 }
