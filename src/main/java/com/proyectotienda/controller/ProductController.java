@@ -53,7 +53,7 @@ public class ProductController {
 
     }
 
-    public void userBuysProduct(User loggedUser) {
+    public Product userBuysProduct(User loggedUser) {
         String promptBuy = "Introduce the name of the product that you want to buy: ";
         String nPro = productInputHandler.getValidatedName(promptBuy);
         Scanner input = new Scanner(System.in);
@@ -71,9 +71,11 @@ public class ProductController {
             System.out.println("You bought " + loggedUser.getUserCart().getProducts().get(p) + " units of "
                     + p.getProductName() + "for the price of "
                     + p.getProductPrice() + "\n\nNow you have " + loggedUser.getUserFunds() + "e left");
-
+            
+            return p;
         } else {
             System.out.println("You do not have enough funds to buy what you want!");
+            return null;
         }
     }
 

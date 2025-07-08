@@ -14,6 +14,7 @@ import com.proyectotienda.model.Cart;
 import com.proyectotienda.model.Product;
 import com.proyectotienda.model.User;
 import com.proyectotienda.repository.DBConnection;
+import com.proyectotienda.repository.CartDAO;
 import com.proyectotienda.repository.ProductDAO;
 import com.proyectotienda.repository.UserDAO;
 
@@ -69,6 +70,7 @@ public class Main {
             ProductController productController = new ProductController(productDAO, productInputHandler);
 
             Cart userCart = new Cart();
+            CartDAO cartDAO = new CartDAO(conn);
 
             if (conn != null) {
                 do {
@@ -100,6 +102,7 @@ public class Main {
                                     case 1:
                                         System.out.println();
                                         productController.userBuysProduct(s);
+                                        cartDAO.addCart(s,p);
                                         break;
                                     case 2:
                                         System.out.println("Nombre del producto que vas a eliminar");
@@ -110,12 +113,13 @@ public class Main {
                                         break;
                                     case 4:
                                         s.getUserCart().showCart();
+                                        s.getUserCart().calculateTotal();
                                         break;
                                     case 5:
                                         System.out.println("Returning to the main menu..");
                                         break;
                                     default:
-                                        
+                                        System.out.println("Insert a value found on the menu");
                                         break;
                                 }
                             } while (switchAnswer2 != 5);
