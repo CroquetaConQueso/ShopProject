@@ -13,13 +13,13 @@ public class CartDAO {
         this.conn = conn;
     }
 
-    public boolean addCart(Cart userCart, User s, Product p) {
+    public boolean addCart(User s,Product p) {
         String sql = "INSERT INTO cart_items (user_id,product_id, quantity) VALUES ( ?, ? , ?)";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, s.getUserId());
             stmt.setInt(2, p.getProductId());
-            stmt.setInt(3, userCart.getProducts().get(p));
+            stmt.setInt(3, s.getUserCart().getProducts().get(p));
 
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {

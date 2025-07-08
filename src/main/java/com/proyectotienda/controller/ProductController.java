@@ -1,6 +1,5 @@
 package com.proyectotienda.controller;
 
-
 import java.util.Scanner;
 
 //It will control the flow of the creation and the connectivity of all the other Product classes
@@ -18,18 +17,17 @@ public class ProductController {
         this.productInputHandler = productInputHandler;
     }
 
-    public Product createProduct() {
-        String pName = "Introduce the name of the product:" ;
+    public Product createProductAdmin() {
+        String pName = "Introduce the name of the product:";
         String pType = "Introduce the type of the product: ";
         String pPrice = "Introduce the price of the product: ";
-
 
         Product product = Product.builder().productName(productInputHandler.getValidatedName(pName))
                 .productType(productInputHandler.getValidatedType(pType))
                 .productPrice(productInputHandler.getValidatedPrice(pPrice)).build();
         boolean check = productDAO.addProduct(product);
 
-        if(!check){
+        if (!check) {
             System.out.println("Error while trying to add a product to the database");
             return null;
         }
@@ -37,25 +35,25 @@ public class ProductController {
         return product;
     }
 
-    public void checkTypesProducts(){
-        String typePrompt = "List of the possible types of products: "; 
+    public void checkTypesProducts() {
+        String typePrompt = "List of the possible types of products: ";
         String tName = productInputHandler.getValidatedType(typePrompt);
         productDAO.listingTypesProducts(tName);
     }
 
-    public void deleteProduct(){
-        String pName = "Introduce the name of the product that you wish to delete: " ;
+    public void deleteProductAdmin() {
+        String pName = "Introduce the name of the product that you wish to delete: ";
         String name = productInputHandler.getValidatedName(pName);
 
-        if(!productDAO.checkProduct(name)){
+        if (!productDAO.checkProduct(name)) {
             System.out.println("The name of the product wasn't found");
-        }else{
+        } else {
             productDAO.dropProduct(name);
         }
-        
+
     }
 
-    public void userBuysProduct(User loggedUser){
+    public Product userBuysProduct(User loggedUser) {
         String promptBuy = "Introduce the name of the product that you want to buy: ";
         String nPro = productInputHandler.getValidatedName(promptBuy);
         Scanner input = new Scanner(System.in);
@@ -64,34 +62,46 @@ public class ProductController {
         int qPro = input.nextInt();
         input.close();
 
-        Product p = productDAO.buyProduct(nPro,qPro);
-        if (loggedUser.getUserFunds() >= (p.getProductPrice()*p.getProductQuantity())) {
-            loggedUser.setUserFunds(loggedUser.getUserFunds()-(p.getProductPrice()*p.getProductQuantity()));
-            //Had to add a new value to have it be passed to the add methode
-            loggedUser.getUserCart().addProduct(p,qPro);
+        Product p = productDAO.buyProduct(nPro, qPro);
+        if (loggedUser.getUserFunds() >= (p.getProductPrice() * p.getProductQuantity())) {
+            loggedUser.setUserFunds(loggedUser.getUserFunds() - (p.getProductPrice() * p.getProductQuantity()));
+            // Had to add a new value to have it be passed to the add methode
+            loggedUser.getUserCart().addProduct(p, qPro);
+
+            System.out.println("You bought " + loggedUser.getUserCart().getProducts().get(p) + " units of "
+                    + p.getProductName() + "for the price of "
+                    + p.getProductPrice() + "\n\nNow you have " + loggedUser.getUserFunds() + "e left");
             
-            System.out.println("You bought "+loggedUser.getUserCart().getProducts().get(p)+ " units of " + p.getProductName() + "for the price of "
-                            + p.getProductPrice() + "\n\nNow you have " + loggedUser.getUserFunds() + "e left");
-            
-        }else{System.out.println("You do not have enough funds to buy what you want!");}
+            return p;
+        } else {
+            System.out.println("You do not have enough funds to buy what you want!");
+            return null;
+        }
     }
 
-    //User RemovesProducts needs to be overhauled and most likely the 1.0.0 version will be done
-    public void userRemovesProduct(User loggedUser){
-        if(loggedUser.getUserCart().getProducts().isEmpty()){
+    // User RemovesProducts needs to be overhauled and most likely the 1.0.0 version
+    // will be done
+    public void userRemovesProduct(User loggedUser) {
+        if (loggedUser.getUserCart().getProducts().isEmpty()) {
             System.out.println("You must get a product first before deleting it");
-        }else{
+        } else {
             String prompt = "Name of the product that you wish to remove: ";
             String pName = productInputHandler.getValidatedName(prompt);
 
-            productDAO.addProduct(null);
-            loggedUser.getUserCart().removeProduct(null, 0);
-    }
+            Product toRemove = loggedUser.getUserCart().getProducts().keySet().stream()
+                    .filter(p -> p.getProductName().equalsIgnoreCase(pName)).findFirst().orElse(null);
+            if(toRemove != null){
+                int quantityRemove = productInputHandler.getValidatedQuantity();
+                loggedUser.getUserCart().removeProduct(toRemove, quantityRemove );
+            }else{
+                System.out.println("The product was not found in your cart");
+            }
+        }
     }
 
-    public void showAllProducts(){
+    public void showAllProducts() {
+        System.out.println("List of all of the products: \n");
         productDAO.showProducts();
     }
 
-                        
 }

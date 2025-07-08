@@ -14,15 +14,10 @@ import com.proyectotienda.model.Cart;
 import com.proyectotienda.model.Product;
 import com.proyectotienda.model.User;
 import com.proyectotienda.repository.DBConnection;
+import com.proyectotienda.repository.CartDAO;
 import com.proyectotienda.repository.ProductDAO;
 import com.proyectotienda.repository.UserDAO;
 
-/*Cambiar logica del attemptlog a: 
- * Connection attemptLog() que retorna conn, luego en main
- * productDAO(?)
- * userDAO(?)
- * Puede que no sea tan útil
-*/
 public class Main {
     private static void menu() {
         System.out.println("Menu:");
@@ -31,7 +26,7 @@ public class Main {
         System.out.println("3.Exit");
     }
 
-    private static void userMenu() {
+    private static void adminMenu() {
         System.out.println("User Menu:");
         System.out.println("1.Create User");
         System.out.println("2.Delete User");
@@ -47,15 +42,6 @@ public class Main {
         System.out.println("3.Show products");
         System.out.println("4.Show User Cart");
         System.out.println("5.Return to Main Menu");
-    }
-
-    private static boolean userListCheck(ArrayList<User> userList) {
-        if (userList.isEmpty()) {
-            System.out.println("There are no users");
-            return false;
-        } else {
-            return true;
-        }
     }
 
     public static void main(String[] args) {
@@ -84,6 +70,7 @@ public class Main {
             ProductController productController = new ProductController(productDAO, productInputHandler);
 
             Cart userCart = new Cart();
+            CartDAO cartDAO = new CartDAO(conn);
 
             if (conn != null) {
                 do {
@@ -115,6 +102,7 @@ public class Main {
                                     case 1:
                                         System.out.println();
                                         productController.userBuysProduct(s);
+                                        cartDAO.addCart(s, p);
                                         break;
                                     case 2:
                                         System.out.println("Nombre del producto que vas a eliminar");
@@ -125,11 +113,13 @@ public class Main {
                                         break;
                                     case 4:
                                         s.getUserCart().showCart();
+                                        s.getUserCart().calculateTotal();
                                         break;
                                     case 5:
                                         System.out.println("Returning to the main menu..");
                                         break;
                                     default:
+                                        System.out.println("Insert a value found on the menu");
                                         break;
                                 }
                             } while (switchAnswer2 != 5);
@@ -137,7 +127,8 @@ public class Main {
                         case 2:
                             System.out.println("Creating User");
                             s = userController.createUser();
-                            System.out.println("The user "+s.getUserName()+" has been created! Redirecting you to the main menu.");
+                            System.out.println("The user " + s.getUserName()
+                                    + " has been created! Redirecting you to the main menu.");
                             break;
                         case 3:
                             System.out.println("Closing the program..");
