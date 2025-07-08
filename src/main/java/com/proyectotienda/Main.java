@@ -102,7 +102,7 @@ public class Main {
                                     case 1:
                                         System.out.println();
                                         productController.userBuysProduct(s);
-                                        cartDAO.addCart(s,p);
+                                        cartDAO.addCart(s, p);
                                         break;
                                     case 2:
                                         System.out.println("Nombre del producto que vas a eliminar");
@@ -127,7 +127,8 @@ public class Main {
                         case 2:
                             System.out.println("Creating User");
                             s = userController.createUser();
-                            System.out.println("The user "+s.getUserName()+" has been created! Redirecting you to the main menu.");
+                            System.out.println("The user " + s.getUserName()
+                                    + " has been created! Redirecting you to the main menu.");
                             break;
                         case 3:
                             System.out.println("Closing the program..");
