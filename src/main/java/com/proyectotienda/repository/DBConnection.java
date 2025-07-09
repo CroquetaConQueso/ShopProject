@@ -15,7 +15,6 @@ public class DBConnection {
             props.load(DBConnection.class.getResourceAsStream(CONFIG_FILE));
 
             props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("db.properties"));
-            props.forEach((k, v) -> System.out.println(k + "=" + v));
 
             String url = props.getProperty("db.url");
             String user = props.getProperty("db.user");

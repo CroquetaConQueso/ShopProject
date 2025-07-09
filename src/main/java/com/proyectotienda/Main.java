@@ -18,7 +18,20 @@ import com.proyectotienda.repository.CartDAO;
 import com.proyectotienda.repository.ProductDAO;
 import com.proyectotienda.repository.UserDAO;
 
-public class Main {
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+public class Main extends Application{
+
+    @Override
+    public void start(Stage stage){
+        stage.setTitle("Mi Aplicación JavaFX");
+        stage.setScene(new Scene(new VBox(),400,300));
+        stage.show();
+    }
+
     private static void menu() {
         System.out.println("Menu:");
         System.out.println("1.Log in");
@@ -45,6 +58,8 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        launch(args);
+
         Scanner input = new Scanner(System.in);
         Connection conn = null;
         // Lists
@@ -101,7 +116,7 @@ public class Main {
                                 switch (switchAnswer2) {
                                     case 1:
                                         System.out.println();
-                                        productController.userBuysProduct(s);
+                                        p = productController.userBuysProduct(s);
                                         cartDAO.addCart(s, p);
                                         break;
                                     case 2:
