@@ -6,7 +6,6 @@ import java.util.Scanner;
 import com.proyectotienda.model.Product;
 import com.proyectotienda.model.User;
 import com.proyectotienda.repository.ProductDAO;
-import com.proyectotienda.repository.CartDAO;
 
 public class ProductController {
     private final ProductDAO productDAO;
