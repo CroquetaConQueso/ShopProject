@@ -102,7 +102,9 @@ public class Main extends Application {
                     }
                     switch (switchAnswer) {
                         case 1:
+                            //Cleaning from memory
                             UserList.clear();
+                            //We try to log as said user
                             s = userController.logginUser();
                             System.out.println("You have logged succesfully as " + s.getUserName());
                             UserList.add(s);
