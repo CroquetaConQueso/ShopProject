@@ -37,19 +37,16 @@ public class UserDAO {
         return false;
     }
 
-    public boolean checkUser(String userToFind) {
+    public boolean checkUser(String userToFind,String passwordToCheck) {
         // After using a ? you have to use a stmt.setXXX to asign a value
-        String sql = "SELECT COUNT(*) FROM user WHERE user_name = ?";
+        String sql = "SELECT user_password FROM user WHERE user_name = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, userToFind);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                int count = rs.getInt(1);
-                if (count > 0) {
-                    System.out.println("The user with the name " + userToFind + " has been found in the database");
-                    return true;
-                }
+                String userPass = rs.getString(1);
+                return passwordToCheck.equals(userPass);
             }
 
             System.out.println("The user with the name " + userToFind + " was not able to be found in the database ");
@@ -103,7 +100,7 @@ public class UserDAO {
     }
 
     public User logUserDao(String userName) {
-        String sql = "SELECT id , user_name, user_password, user_funds FROM user where user_name = ?";
+        String sql = "SELECT user_id , user_name, user_password, user_funds FROM user where user_name = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, userName);

@@ -144,7 +144,7 @@ public class ProductDAO {
     }
 
     public void showProducts() {
-        String sql = "SELECT VALUES(product_name,product_type,product_price) from product";
+        String sql = "SELECT product_name,product_type,product_price from product";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             ResultSet rs = stmt.executeQuery();
             if (rs != null) {
