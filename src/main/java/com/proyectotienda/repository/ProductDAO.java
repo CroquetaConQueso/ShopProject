@@ -17,7 +17,7 @@ public class ProductDAO {
      * ADMIN
      */
     public boolean addProduct(Product product) {
-        String sql = "INSERT INTO PRODUCTS (name, type, price) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO PRODUCT (product_name, product_type, product_price) VALUES (?, ?, ?)";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, product.getProductName());
@@ -41,7 +41,7 @@ public class ProductDAO {
     }
 
     public boolean modifyProduct(String nProductName, String nProductType, float nProductPrice, String oldProductName) {
-        String sql = "UPDATE productos SET name = ?, type = ? , price = ? where name = ?";
+        String sql = "UPDATE product SET product_name = ?, product_type = ? , product_price = ? where product_name = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, nProductName);
@@ -65,7 +65,7 @@ public class ProductDAO {
     }
 
     public boolean dropProduct(String productName) {
-        String sql = "DELETE from productos WHERE name = ?";
+        String sql = "DELETE from product WHERE product_name = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, productName);
@@ -85,7 +85,7 @@ public class ProductDAO {
     }
 
     public boolean checkProduct(String productToFind) {
-        String sql = "SELECT COUNT(*) FROM products where name = ?";
+        String sql = "SELECT COUNT(*) FROM product where product_name = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, productToFind);
@@ -107,7 +107,7 @@ public class ProductDAO {
     }
 
     public void listingTypesProducts(String typeProduct) {
-        String sql = "SELECT name,price from products where type = ?";
+        String sql = "SELECT product_name,product_price from product where product_type = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, typeProduct);
@@ -125,7 +125,7 @@ public class ProductDAO {
     }
 
     public Product buyProduct(String productToBuy, int pQuantity) {
-        String sql = "SELECT id,name,type,price from products where name = ?";
+        String sql = "SELECT product_id,product_name,product_type,product_price from product where product_name = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, productToBuy);
@@ -144,7 +144,7 @@ public class ProductDAO {
     }
 
     public void showProducts() {
-        String sql = "SELECT VALUES(name,type,price) from products";
+        String sql = "SELECT VALUES(product_name,product_type,product_price) from product";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             ResultSet rs = stmt.executeQuery();
             if (rs != null) {
