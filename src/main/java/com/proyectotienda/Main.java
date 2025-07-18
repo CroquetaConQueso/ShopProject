@@ -1,5 +1,6 @@
 package com.proyectotienda;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,17 +20,28 @@ import com.proyectotienda.repository.ProductDAO;
 import com.proyectotienda.repository.UserDAO;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class Main extends Application{
+public class Main extends Application {
 
     @Override
-    public void start(Stage stage){
-        stage.setTitle("Mi Aplicación JavaFX");
-        stage.setScene(new Scene(new VBox(),400,300));
-        stage.show();
+    public void start(Stage stage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/primary.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Tienda");
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/iconTienda.png")));
+            stage.show();
+        } catch (IOException e) {
+            System.out.println("Error: " + e);
+        }
     }
 
     private static void menu() {
@@ -37,15 +49,6 @@ public class Main extends Application{
         System.out.println("1.Log in");
         System.out.println("2.Register");
         System.out.println("3.Exit");
-    }
-
-    private static void adminMenu() {
-        System.out.println("User Menu:");
-        System.out.println("1.Create User");
-        System.out.println("2.Delete User");
-        System.out.println("3.Show Users");
-        System.out.println("4.Modify User");
-        System.out.println("5.Return to Main Menu");
     }
 
     private static void productMenu() {

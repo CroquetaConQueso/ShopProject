@@ -15,7 +15,7 @@ public class UserDAO {
     }
 
     public boolean addUser(User user) {
-        String sql = "INSERT INTO users (user_name, user_pass, user_funds) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO user (user_name, user_password, user_funds) VALUES (?, ?, ?)";
         // If values need to be returned from the database
         try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, user.getUserName());
@@ -39,7 +39,7 @@ public class UserDAO {
 
     public boolean checkUser(String userToFind) {
         // After using a ? you have to use a stmt.setXXX to asign a value
-        String sql = "SELECT COUNT(*) FROM users WHERE user_name = ?";
+        String sql = "SELECT COUNT(*) FROM user WHERE user_name = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, userToFind);
@@ -64,7 +64,7 @@ public class UserDAO {
     public void modifyUser(String nName, String nPass, float nFunds, String oldName) {
         // The "?" establish the order of the parameters, the first ? establishes that
         // parameterIndex one from stmt.setString will use that value
-        String sql = "UPDATE users SET user_name = ?, user_pass = ? , user_funds = ? WHERE user_name = ?";
+        String sql = "UPDATE user SET user_name = ?, user_password = ? , user_funds = ? WHERE user_name = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, nName);
@@ -86,7 +86,7 @@ public class UserDAO {
     }
 
     public void dropUser(String userName) {
-        String sql = "DELETE FROM users where user_name = ?";
+        String sql = "DELETE FROM user where user_name = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, userName);
@@ -103,7 +103,7 @@ public class UserDAO {
     }
 
     public User logUserDao(String userName) {
-        String sql = "SELECT id , user_name, user_pass, user_funds FROM users where user_name = ?";
+        String sql = "SELECT id , user_name, user_password, user_funds FROM user where user_name = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, userName);
