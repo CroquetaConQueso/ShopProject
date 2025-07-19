@@ -29,6 +29,19 @@ public class UserController {
         return user;
     }
 
+    public User logginUser1(String userName,String userPassword) {
+
+        String name = userInputHandler.getValidatedName(userName);
+        String pass = userInputHandler.getValidatedPassword(userPassword);
+
+        if (!userDAO.checkUser(name,pass)) {
+            System.out.println("The username doesn't exist in the database");
+            return null;
+        }
+        // More feedback?
+        return userDAO.logUserDao(name);
+    }
+
     public User logginUser() {
         String namePrompt = "Introduce the name of the user: ";
         String passPrompt = "Introduce the pass of the user: ";

@@ -9,18 +9,36 @@ public class UserInputHandler {
         this.input = input;
     }
 
-    public String getValidatedName(String prompt) {
-        System.out.print(prompt);
-        String name = input.nextLine();
+    public String getValidatedName(String name) {
+        
         if (name.length() > 50) {
             System.out.println("The name can't be longer than 50 characters");
-            return getValidatedName(prompt);
+            return getValidatedName(name);
         } else if (name.length() < 2) {
             System.out.println("The name needs to have more than 2 characters");
-            return getValidatedName(prompt);
+            return getValidatedName(name);
         }
 
         return name;
+    }
+
+
+    public String getValidatedPassword1(String password) {
+        if (password.length() < 7) {
+            System.out.println("The password can't have less than 7 characters");
+            return getValidatedPassword(password);
+        } else if (password.length() > 50) {
+            System.out.println("The password can't be longer than 50 characters");
+            return getValidatedPassword(password);
+        }
+        for (int i = 0; i < password.length(); i++) {
+            if (!Character.isLetterOrDigit(password.charAt(i))) {
+                System.out.println("The password can only have letters or numbers");
+                return getValidatedPassword(password);
+            }
+        }
+        return password;
+
     }
 
     public String getValidatedPassword(String prompt) {
@@ -39,8 +57,6 @@ public class UserInputHandler {
                 return getValidatedPassword(prompt);
             }
         }
-
-        System.out.println("The password has been successfully created");
         return password;
 
     }
