@@ -47,25 +47,29 @@ public class UserController {
     public void deleteUser() {
         String namePrompt = "Introduce the name of the user that you seek to delete: ";
         String name = userInputHandler.getValidatedName(namePrompt);
+        String passPrompt = "Introduce now the password: ";
+        String pass = userInputHandler.getValidatedPassword(passPrompt);
 
-        if (!userDAO.checkUser(name)) {
+        if (!userDAO.checkUser(name, pass)) {
             System.out.println("There's no user with the name: " + name);
         } else {
-            userDAO.dropUser(name);
+            userDAO.dropUser(name, pass);
         }
     }
 
     public void modifyUser() {
         String namePrompt = "Introduce the name of the user that you want to search: ";
         String oldName = userInputHandler.getValidatedName(namePrompt);
+        String passPrompt = "Introduce now the password: ";
+        String pass = userInputHandler.getValidatedPassword(passPrompt);
 
-        if (userDAO.checkUser(oldName)) {
+        if (userDAO.checkUser(oldName,passPrompt)) {
             String newNamePrompt = "Introduce the new name that you will use as an user: ";
-            String passPrompt = "Introduce your new password(It can't have special characters!): ";
+            String newPassPrompt = "Introduce your new password(It can't have special characters!): ";
             String fundsPrompt = "Introduce your new user funds: ";
 
             String nName = userInputHandler.getValidatedName(newNamePrompt);
-            String nPass = userInputHandler.getValidatedPassword(passPrompt);
+            String nPass = userInputHandler.getValidatedPassword(newPassPrompt);
             float nFunds = userInputHandler.getValidatedFunds(fundsPrompt);
 
             userDAO.modifyUser(nName, nPass, nFunds, oldName);

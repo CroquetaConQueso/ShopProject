@@ -82,11 +82,12 @@ public class UserDAO {
         }
     }
 
-    public void dropUser(String userName) {
-        String sql = "DELETE FROM user where user_name = ?";
+    public void dropUser(String userName,String userPass) {
+        String sql = "DELETE FROM user where user_name = ? and user_password = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, userName);
+            stmt.setString(2, userPass);
             int rowsAffected = stmt.executeUpdate();
 
             if (rowsAffected > 0) {
