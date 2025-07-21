@@ -2,6 +2,9 @@ package com.proyectotienda.controller;
 
 import java.io.IOException;
 
+import com.proyectotienda.model.User;
+import com.proyectotienda.repository.UserDAO;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,10 +13,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 
 public class SceneControllerLogin {
+    private UserController userController;
+    private User s;
+    private UserDAO userDAO;
+    public void setUserController(UserController userController){
+        this.userController = userController;
+    }
 
     @FXML
     private Label errorUserNameLabel;
@@ -28,7 +39,7 @@ public class SceneControllerLogin {
     private PasswordField passFieldUserSc1;
 
     public void loggin(ActionEvent event) throws IOException {
-        
+        Alert alert = new Alert(AlertType.ERROR);
         String username = textFieldUserSc1.getText();
         String userpass = passFieldUserSc1.getText();
 
@@ -40,7 +51,12 @@ public class SceneControllerLogin {
             errorUserPassLabel.setText("The password must be alphanumerical and have at least 7 characters");
             return ;
         }
-        
+        if (!userDAO.checkUser(username, userpass)){
+            alert.setTitle("Credentials Error");
+            alert.setHeaderText("Error with the username/password");
+            alert.setContentText("The password or the account name weren't on the database");
+        }
+        userDAO.logUserDao(username);
         errorUserNameLabel.setText("");
         errorUserPassLabel.setText("");
 
