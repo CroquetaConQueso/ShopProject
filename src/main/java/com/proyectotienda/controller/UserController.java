@@ -1,11 +1,14 @@
 package com.proyectotienda.controller;
 
+//This class doesn't have much meaning anymore within a GUI setting, therefore it will no longer be supported nor held in the AppContext
+
+
 //It will control the flow of the creation and the connectivity of all the other User classes
 import com.proyectotienda.model.User;
 import com.proyectotienda.repository.UserDAO;
 
 public class UserController {
-    private final UserDAO userDAO;
+    private final  UserDAO userDAO;
     private final UserInputHandler userInputHandler;
 
     public UserController(UserDAO userDAO, UserInputHandler userInputHandler) {
@@ -13,13 +16,21 @@ public class UserController {
         this.userInputHandler = userInputHandler;
     }
 
-    public User createUser() {
-        String namePrompt = "Introduce the name that you will use as an user: ";
-        String passPrompt = "Introduce your password(It can't have special characters!): ";
-        String fundsPrompt = "Introduce your user funds: ";
-        User user = User.builder().userName(userInputHandler.getValidatedName(namePrompt))
-                .userPass(userInputHandler.getValidatedPassword(passPrompt))
-                .userFunds(userInputHandler.getValidatedFunds(fundsPrompt))
+    public UserDAO getUserDAO(){
+        return userDAO;
+    }
+
+    public User createUser(String username, String user_pass, String userFunds) {
+        
+        if(!userInputHandler.getValidatedName(username)){return null;}
+        else if(!userInputHandler.getValidatedPassword(user_pass)){return null;}
+        else if(!userInputHandler.getValidatedFunds(userFunds)){return null;}
+
+        float newfunds = Float.parseFloat(userFunds);
+
+        User user = User.builder().userName(username)
+                .userPass(user_pass)
+                .userFunds(newfunds)
                 .build();
         boolean check = userDAO.addUser(user);
         if (!check) {
@@ -29,51 +40,49 @@ public class UserController {
         return user;
     }
 
-    public  User logginUser1(String userName,String userPassword) {
+    public  User logginUser(String userName,String userPassword) {
 
-        String name = userInputHandler.getValidatedName(userName);
-        String pass = userInputHandler.getValidatedPassword(userPassword);
-
-        if (!userDAO.checkUser(name,pass)) {
+        if (!userDAO.checkUser(userName,userPassword)) {
             System.out.println("The username doesn't exist in the database");
             return null;
         }
         // More feedback?
-        return userDAO.logUserDao(name);
+        return userDAO.logUserDao(userName);
     }
 
-    public User logginUser() {
-        String namePrompt = "Introduce the name of the user: ";
-        String passPrompt = "Introduce the pass of the user: ";
 
-        String name = userInputHandler.getValidatedName(namePrompt);
-        String pass = userInputHandler.getValidatedPassword(passPrompt);
+    public boolean deleteUser(String userName, String userPassword) {
 
-        if (!userDAO.checkUser(name,pass)) {
-            System.out.println("The username doesn't exist in the database");
-            return null;
-        }
-        // More feedback?
-        return userDAO.logUserDao(name);
-    }
-
-    public void deleteUser() {
-        String namePrompt = "Introduce the name of the user that you seek to delete: ";
-        String name = userInputHandler.getValidatedName(namePrompt);
-        String passPrompt = "Introduce now the password: ";
-        String pass = userInputHandler.getValidatedPassword(passPrompt);
-
-        if (!userDAO.checkUser(name, pass)) {
-            System.out.println("There's no user with the name: " + name);
+        if (!userDAO.checkUser(userName, userPassword)) {
+            return false;
         } else {
-            userDAO.dropUser(name, pass);
+            userDAO.dropUser(userName, userPassword);
+            return true;
         }
     }
 
+    /* It doesn't have any logic any more within a GUI setting 
+    public User modifyUser(User s){
+
+         if (userDAO.checkUser(s.getUserName(),s.getUserPass())) {
+            String newNamePrompt = "Introduce the new name that you will use as an user: ";
+            String newPassPrompt = "Introduce your new password(It can't have special characters!): ";
+            String fundsPrompt = "Introduce your new user funds: ";
+
+            String nName = userInputHandler.getValidatedName(newNamePrompt);
+            String nPass = userInputHandler.getValidatedPassword(newPassPrompt);
+            float nFunds = userInputHandler.getValidatedFunds(fundsPrompt);
+
+            userDAO.modifyUser(nName, nPass, nFunds, oldName);
+        }
+
+        return s;
+    }
+        */
+
+    /*  This will be reworked for the future Admin class
     public void modifyUser() {
-        String namePrompt = "Introduce the name of the user that you want to search: ";
         String oldName = userInputHandler.getValidatedName(namePrompt);
-        String passPrompt = "Introduce now the password: ";
         String pass = userInputHandler.getValidatedPassword(passPrompt);
 
         if (userDAO.checkUser(oldName,passPrompt)) {
@@ -88,4 +97,5 @@ public class UserController {
             userDAO.modifyUser(nName, nPass, nFunds, oldName);
         }
     }
+        */
 }

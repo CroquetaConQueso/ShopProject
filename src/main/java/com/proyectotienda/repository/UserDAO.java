@@ -15,7 +15,7 @@ public class UserDAO {
     }
 
     public boolean addUser(User user) {
-        String sql = "INSERT INTO user (user_name, user_password, user_funds) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO users (username, user_password, user_funds) VALUES (?, ?, ?)";
         // If values need to be returned from the database
         try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, user.getUserName());
@@ -39,7 +39,7 @@ public class UserDAO {
 
     public boolean checkUser(String userToFind,String passwordToCheck) {
         // After using a ? you have to use a stmt.setXXX to asign a value
-        String sql = "SELECT user_password FROM user WHERE user_name = ?";
+        String sql = "SELECT user_password FROM users WHERE username = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, userToFind);
@@ -49,11 +49,9 @@ public class UserDAO {
                 return passwordToCheck.equals(userPass);
             }
 
-            System.out.println("The user with the name " + userToFind + " was not able to be found in the database ");
             return false;
 
         } catch (SQLException e) {
-            System.out.println("Error while trying to search for an user: " + e.getMessage());
             return false;
         }
     }
@@ -61,7 +59,7 @@ public class UserDAO {
     public void modifyUser(String nName, String nPass, float nFunds, String oldName) {
         // The "?" establish the order of the parameters, the first ? establishes that
         // parameterIndex one from stmt.setString will use that value
-        String sql = "UPDATE user SET user_name = ?, user_password = ? , user_funds = ? WHERE user_name = ?";
+        String sql = "UPDATE users SET username = ?, user_password = ? , user_funds = ? WHERE username = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, nName);
@@ -83,7 +81,7 @@ public class UserDAO {
     }
 
     public void dropUser(String userName,String userPass) {
-        String sql = "DELETE FROM user where user_name = ? and user_password = ?";
+        String sql = "DELETE FROM users where username = ? and user_password = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, userName);
@@ -101,7 +99,7 @@ public class UserDAO {
     }
 
     public User logUserDao(String userName) {
-        String sql = "SELECT user_id , user_name, user_password, user_funds FROM user where user_name = ?";
+        String sql = "SELECT user_id , username, user_password, user_funds FROM users where username = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, userName);

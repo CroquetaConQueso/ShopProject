@@ -9,18 +9,7 @@ public class UserInputHandler {
         this.input = input;
     }
 
-    public String getValidatedName(String name) {
-
-        if (name.length() > 50) {
-            System.out.println("The name can't be longer than 50 characters");
-        } else if (name.length() < 2) {
-            System.out.println("The name needs to have more than 2 characters");
-        }
-
-        return name;
-    }
-
-    public static boolean getValidatedName1(String name) {
+    public  boolean getValidatedName(String name) {
 
         if (name.length() > 50) {
             return false;
@@ -31,7 +20,7 @@ public class UserInputHandler {
         return true;
     }
 
-    public static boolean getValidatedPassword1(String password) {
+    public  boolean getValidatedPassword(String password) {
         int sum = 0;
 
         if (password.length() < 7) {
@@ -54,41 +43,21 @@ public class UserInputHandler {
 
     }
 
-    public String getValidatedPassword(String prompt) {
-        System.out.print(prompt);
-        String password = input.nextLine();
-        if (password.length() < 7) {
-            System.out.println("The password can't have less than 7 characters");
-            return getValidatedPassword(prompt);
-        } else if (password.length() > 50) {
-            System.out.println("The password can't be longer than 50 characters");
-            return getValidatedPassword(prompt);
-        }
-        for (int i = 0; i < password.length(); i++) {
-            if (!Character.isLetterOrDigit(password.charAt(i))) {
-                System.out.println("The password can only have letters or numbers");
-                return getValidatedPassword(prompt);
-            }
-        }
-        return password;
-
-    }
-
-    public float getValidatedFunds(String prompt) {
-        System.out.print(prompt);
-        String funds = input.nextLine().replace(',', '.');
+    public boolean getValidatedFunds(String funds) {
+        funds = funds.replace(',', '.');
 
         if (!funds.matches("^\\d+(\\.\\d{1,2})?$")) {
             System.out.println("Invalid funds format. Only numbers with up to two decimal places are allowed.");
-            return getValidatedFunds(prompt);
+            return false;
         }
+
         float convertedFunds = Float.parseFloat(funds);
 
         if (convertedFunds <= 0) {
             System.out.println("You can't have zero funds or negative funds");
-            return getValidatedFunds(prompt);
+            return false;
         }
 
-        return convertedFunds;
+        return true;
     }
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import com.mysql.cj.jdbc.AbandonedConnectionCleanupThread;
+import com.proyectotienda.app.AppContext;
 import com.proyectotienda.controller.ProductController;
 import com.proyectotienda.controller.ProductInputHandler;
 import com.proyectotienda.controller.UserController;
@@ -22,14 +23,17 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
+        System.out.println(AppContext.getUserWord());
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/primary.fxml"));
             Parent root = loader.load();
@@ -38,8 +42,25 @@ public class Main extends Application {
             stage.setTitle("Tienda");
             stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/iconTienda.png")));
             stage.show();
+
+            stage.setOnCloseRequest(event -> {
+                event.consume();
+                logout(stage);
+            });
         } catch (IOException e) {
             System.out.println("Error: " + e);
+        }
+    }
+
+    public void logout(Stage stage){
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Closing the program");
+        alert.setHeaderText("You are about to leave");
+        alert.setContentText("Do you want to save before exiting? ");
+
+        if(alert.showAndWait().get() == ButtonType.OK){
+            System.out.println("Leaving the program..");
+            stage.close();
         }
     }
 
@@ -60,37 +81,38 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        launch(args);
-
-        System.out.println("WUUUUUUUUUUUU");
         Scanner input = new Scanner(System.in);
         Connection conn = null;
         // Lists
         ArrayList<User> UserList = new ArrayList<>();
-
+        
         // Values
         int switchAnswer = 0;
         int switchAnswer2 = 0;
-
+        
         try {
             conn = DBConnection.getConnection();
-
+            
             // Classes related to the User
             User s = null;
             UserDAO userDAO = new UserDAO(conn);
             UserInputHandler userInputHandler = new UserInputHandler(input);
-            UserController userController = new UserController(userDAO, userInputHandler);
-
+            // Old vestige UserController userController = new UserController(userDAO, userInputHandler);
+            
             // Classes related to the product
             Product p = null;
             ProductDAO productDAO = new ProductDAO(conn);
             ProductInputHandler productInputHandler = new ProductInputHandler(input);
             ProductController productController = new ProductController(productDAO, productInputHandler);
-
+            
             Cart userCart = new Cart();
-
+            
+            
             if (conn != null) {
                 do {
+                    AppContext.setConnection(conn);
+                    AppContext.setUserDao(userDAO);
+                    launch(args);
                     menu();
                     System.out.print("Introduce a value found on the menu: ");
                     try {
@@ -104,7 +126,7 @@ public class Main extends Application {
                             //Cleaning from memory
                             UserList.clear();
                             //We try to log as said user
-                            s = userController.logginUser();
+                            // Old vestige of the prior app , s = userController.logginUser();
                             System.out.println("You have logged succesfully as " + s.getUserName());
                             UserList.add(s);
                             s.setUserCart(userCart);
@@ -144,7 +166,7 @@ public class Main extends Application {
                             break;
                         case 2:
                             System.out.println("Creating User");
-                            s = userController.createUser();
+                            // Old vestige of the prior app, s = userController.createUser();
                             System.out.println("The user " + s.getUserName()
                                     + " has been created! Redirecting you to the main menu.");
                             break;

@@ -3,6 +3,7 @@ package com.proyectotienda.repository;
 //Class to build the Product in the Database
 import com.proyectotienda.model.Product;
 import java.sql.*;
+import java.util.ArrayList;
 
 // TODO : List products, modify product, remove product(Admin class?)
 public class ProductDAO {
@@ -159,5 +160,21 @@ public class ProductDAO {
             System.out.println("Error accessing the data base to show all the products: " + e.getMessage());
         }
     }
+
+    public ArrayList<Product> returningProductTypes(){
+        ArrayList <Product> productList = new ArrayList<>();
+
+        String sql = "SELECT product_id,product_name,product_type,product_price from products";
+
+        try(PreparedStatement stmnt = conn.prepareStatement(sql)){
+            ResultSet rs = stmnt.executeQuery();
+            while(rs.next()){
+                productList.add(Product.builder().productId(rs.getInt(1)).productName(rs.getString(2)).productType(rs.getString(3)).productPrice(rs.getFloat(4)).build());
+            }
+            System.out.println(productList);
+        }catch(SQLException e){System.out.println("Error: "+e);}
+        return productList;
+        
+    } 
 
 }
