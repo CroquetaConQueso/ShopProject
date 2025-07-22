@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import com.mysql.cj.jdbc.AbandonedConnectionCleanupThread;
+import com.proyectotienda.app.AppContext;
 import com.proyectotienda.controller.ProductController;
 import com.proyectotienda.controller.ProductInputHandler;
-import com.proyectotienda.controller.SceneControllerLogin;
 import com.proyectotienda.controller.UserController;
 import com.proyectotienda.controller.UserInputHandler;
 import com.proyectotienda.model.Cart;
@@ -33,6 +33,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
+        System.out.println(AppContext.getUserWord());
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/primary.fxml"));
             Parent root = loader.load();
@@ -62,7 +63,7 @@ public class Main extends Application {
             stage.close();
         }
     }
-    
+
     private static void menu() {
         System.out.println("Menu:");
         System.out.println("1.Log in");
@@ -80,7 +81,6 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        
         Scanner input = new Scanner(System.in);
         Connection conn = null;
         // Lists
@@ -97,7 +97,7 @@ public class Main extends Application {
             User s = null;
             UserDAO userDAO = new UserDAO(conn);
             UserInputHandler userInputHandler = new UserInputHandler(input);
-            UserController userController = new UserController(userDAO, userInputHandler);
+            // Old vestige UserController userController = new UserController(userDAO, userInputHandler);
             
             // Classes related to the product
             Product p = null;
@@ -107,11 +107,12 @@ public class Main extends Application {
             
             Cart userCart = new Cart();
             
-            launch(args);
-
-
+            
             if (conn != null) {
                 do {
+                    AppContext.setConnection(conn);
+                    AppContext.setUserDao(userDAO);
+                    launch(args);
                     menu();
                     System.out.print("Introduce a value found on the menu: ");
                     try {
@@ -125,7 +126,7 @@ public class Main extends Application {
                             //Cleaning from memory
                             UserList.clear();
                             //We try to log as said user
-                            s = userController.logginUser();
+                            // Old vestige of the prior app , s = userController.logginUser();
                             System.out.println("You have logged succesfully as " + s.getUserName());
                             UserList.add(s);
                             s.setUserCart(userCart);
@@ -165,7 +166,7 @@ public class Main extends Application {
                             break;
                         case 2:
                             System.out.println("Creating User");
-                            s = userController.createUser();
+                            // Old vestige of the prior app, s = userController.createUser();
                             System.out.println("The user " + s.getUserName()
                                     + " has been created! Redirecting you to the main menu.");
                             break;

@@ -1,10 +1,14 @@
 package com.proyectotienda.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.proyectotienda.app.AppContext;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -16,7 +20,7 @@ public class SceneControllerMenu implements Initializable{
     @FXML
     private Label labelTitle;
 
-    String[] listValues = {"Meat","Fish"};
+    List<Product> productList = AppContext.geProductDAO().showProducts();
     String currentChoice;
 
     @Override
@@ -31,5 +35,10 @@ public class SceneControllerMenu implements Initializable{
             }
             
         });
+    }
+
+    public void logged(ActionEvent event) throws IOException{
+
+
     }
 }
