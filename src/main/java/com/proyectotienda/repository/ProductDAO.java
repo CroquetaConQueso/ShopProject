@@ -107,21 +107,25 @@ public class ProductDAO {
         }
     }
 
-    public void listingTypesProducts(String typeProduct) {
-        String sql = "SELECT product_name,product_price from product where product_type = ?";
-
+    //This method takes a type of product (which will be taken by click on the ListView) and then search each product to then have it return a list full with the products of said type
+    public ArrayList<Product> listingTypesProducts(String typeProduct) {
+        String sql = "SELECT product_id,product_name,product_type,product_price from products where product_type = ?";
+        ArrayList<Product> listProducts = new ArrayList<>();
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, typeProduct);
             ResultSet rs = stmt.executeQuery();
             if (rs != null) {
-                System.out.println("The products of the type " + typeProduct + ":");
                 while (rs.next()) {
-                    System.out.println("\nName: " + rs.getString(1) + "\nPrice: " + rs.getFloat(2));
+                    Product p = Product.builder().productId(rs.getInt(1)).productName(rs.getString(2)).productType(rs.getString(3)).productPrice(rs.getFloat(4)).build();
+                    listProducts.add(p);
                 }
+                return listProducts;
+            }else{
+                return null;
             }
 
         } catch (SQLException e) {
-            System.out.println("Error while trying to list the products: " + e.getMessage());
+            return null;
         }
     }
 

@@ -112,6 +112,7 @@ public class Main extends Application {
                 do {
                     AppContext.setConnection(conn);
                     AppContext.setUserDao(userDAO);
+                    AppContext.setProductDAO(productDAO);
                     launch(args);
                     menu();
                     System.out.print("Introduce a value found on the menu: ");
