@@ -33,7 +33,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        System.out.println(AppContext.getUserWord());
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/primary.fxml"));
             Parent root = loader.load();
@@ -113,6 +112,8 @@ public class Main extends Application {
                     AppContext.setConnection(conn);
                     AppContext.setUserDao(userDAO);
                     AppContext.setProductDAO(productDAO);
+                    AppContext.setUserInputHandler(userInputHandler);
+                    AppContext.setProductInputHandler(productInputHandler);
                     launch(args);
                     menu();
                     System.out.print("Introduce a value found on the menu: ");
