@@ -44,6 +44,11 @@ public class SceneControllerLogin {
 
     public void loggin(ActionEvent event) throws IOException {
         Alert alert = new Alert(AlertType.ERROR);
+        errorUserNameLabel.setVisible(false);
+        errorUserNameLabel.setManaged(false);
+        errorUserPassLabel.setVisible(false);
+        errorUserPassLabel.setManaged(false);
+        
         String username = textFieldUserSc1.getText();
         String userpass = passFieldUserSc1.getText();
 
@@ -56,7 +61,6 @@ public class SceneControllerLogin {
             return;
         }
         s = userDAO.logUserDao(username);
-        System.out.println("Waawawa");
         
         errorUserNameLabel.setText("");
         errorUserPassLabel.setText("");
@@ -68,6 +72,17 @@ public class SceneControllerLogin {
         stage.setScene(scene);
         stage.show();
 
+    }
+
+    public void registerAccount(ActionEvent event){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/register.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }catch(IOException e){System.out.println("Error: "+e);}
     }
 
 }

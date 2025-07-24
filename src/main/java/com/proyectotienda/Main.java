@@ -33,7 +33,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        System.out.println(AppContext.getUserWord());
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/primary.fxml"));
             Parent root = loader.load();
