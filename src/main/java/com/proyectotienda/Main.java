@@ -112,6 +112,8 @@ public class Main extends Application {
                     AppContext.setConnection(conn);
                     AppContext.setUserDao(userDAO);
                     AppContext.setProductDAO(productDAO);
+                    AppContext.setUserInputHandler(userInputHandler);
+                    AppContext.setProductInputHandler(productInputHandler);
                     launch(args);
                     menu();
                     System.out.print("Introduce a value found on the menu: ");
