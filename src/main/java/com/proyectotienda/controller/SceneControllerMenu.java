@@ -3,11 +3,11 @@ package com.proyectotienda.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import com.proyectotienda.app.AppContext;
 import com.proyectotienda.model.Product;
+import com.proyectotienda.model.User;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -26,6 +26,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class SceneControllerMenu implements Initializable {
+    private User loggedUser;
     @FXML
     private Button accountButton;
     @FXML
@@ -40,6 +41,9 @@ public class SceneControllerMenu implements Initializable {
     String[] listValues = { "Food", "Clothing", "Electronics" };
     String currentChoice;
 
+    public void setUser(User user){
+        this.loggedUser = user;
+    }
     // Loads the values of the ListView and gives them each type, which I have
     // already preestablished on the String Array
     @Override
@@ -106,11 +110,24 @@ public class SceneControllerMenu implements Initializable {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/accountDetails.fxml"));
             Parent root = loader.load();
+            SceneControllerAccountDetails controllerAccountDetails = loader.getController();
+            controllerAccountDetails.setUser(loggedUser);
             Scene scene = new Scene(root);
             Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
 
         }catch(IOException e){System.out.println("Error: "+ e);}
+    }
+
+    public void disconnect(ActionEvent event){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/primary.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        }catch(IOException e){System.out.println(e);}
     }
 }

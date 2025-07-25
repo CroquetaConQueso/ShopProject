@@ -22,7 +22,6 @@ import javafx.stage.Stage;
 
 //Barebones done
 public class SceneControllerLogin {
-    private User s;
     private UserDAO userDAO;
 
     @FXML
@@ -60,13 +59,15 @@ public class SceneControllerLogin {
             alert.showAndWait();
             return;
         }
-        s = userDAO.logUserDao(username);
+        User s = userDAO.logUserDao(username);
         
         errorUserNameLabel.setText("");
         errorUserPassLabel.setText("");
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/secondary.fxml"));
         Parent root = loader.load();
+        SceneControllerMenu menuController = loader.getController();
+        menuController.setUser(s);
         Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
