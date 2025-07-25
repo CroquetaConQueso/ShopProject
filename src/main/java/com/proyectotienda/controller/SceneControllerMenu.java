@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import com.proyectotienda.app.AppContext;
+import com.proyectotienda.model.Cart;
 import com.proyectotienda.model.Product;
 import com.proyectotienda.model.User;
 

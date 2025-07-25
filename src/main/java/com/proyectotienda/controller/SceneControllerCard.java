@@ -2,6 +2,7 @@ package com.proyectotienda.controller;
 
 import com.proyectotienda.model.Product;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
@@ -22,6 +23,14 @@ public class SceneControllerCard{
             labelProductName.setText(product.getProductName());
             labelProductPrice.setText(String.valueOf(product.getProductPrice()));
         }
+    }
+
+    public void addProductButton(ActionEvent event){
+        
+    }
+
+    public void removeProductButton(ActionEvent event){
+
     }
 
 }
