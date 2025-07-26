@@ -28,6 +28,8 @@ import javafx.stage.Stage;
 public class SceneControllerMenu implements Initializable {
     private User loggedUser;
     @FXML
+    private Label labelShowCart;
+    @FXML
     private Button accountButton;
     @FXML
     private ListView<String> listViewProducts;
@@ -91,6 +93,7 @@ public class SceneControllerMenu implements Initializable {
 
                 SceneControllerCard controller = loader.getController();
                 controller.setProduct(product);
+                controller.setUserCart(loggedUser.getUserCart());
                 controller.giveValuesCard();
                 
                 //0 is a value, therefore the first one will be added in 0 / 0
@@ -130,4 +133,9 @@ public class SceneControllerMenu implements Initializable {
             stage.show();
         }catch(IOException e){System.out.println(e);}
     }
+
+    public void showCart(ActionEvent event){
+        labelShowCart.setText(loggedUser.getUserCart().showCart());
+    }
+
 }

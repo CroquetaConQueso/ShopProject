@@ -42,6 +42,8 @@ public class SceneControllerAccountDetails {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/secondary.fxml"));
             Parent root = loader.load();
+            SceneControllerMenu controller = loader.getController();
+            controller.setUser(loggedUser);
             Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);

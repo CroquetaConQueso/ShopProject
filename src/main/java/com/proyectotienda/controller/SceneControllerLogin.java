@@ -3,6 +3,7 @@ package com.proyectotienda.controller;
 import java.io.IOException;
 
 import com.proyectotienda.app.AppContext;
+import com.proyectotienda.model.Cart;
 import com.proyectotienda.model.User;
 import com.proyectotienda.repository.UserDAO;
 
@@ -67,6 +68,8 @@ public class SceneControllerLogin {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/secondary.fxml"));
         Parent root = loader.load();
         SceneControllerMenu menuController = loader.getController();
+        Cart userCart = new Cart();
+        s.setUserCart(userCart);
         menuController.setUser(s);
         Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
