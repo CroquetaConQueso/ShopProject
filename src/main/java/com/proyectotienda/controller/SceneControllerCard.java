@@ -1,5 +1,6 @@
 package com.proyectotienda.controller;
 
+import com.proyectotienda.model.Cart;
 import com.proyectotienda.model.Product;
 
 import javafx.event.ActionEvent;
@@ -8,14 +9,17 @@ import javafx.scene.control.Label;
 
 public class SceneControllerCard{
     private Product product;
-
+    private Cart userCart;
     @FXML
     private Label labelProductName;
     @FXML
     private Label labelProductPrice;
     //Establishes the setter
     public void setProduct(Product p){
-        product = p;
+        this.product = p;
+    }
+    public void setUserCart(Cart c){
+        this.userCart = c;
     }
     //Gives value to the labels of the product card
     public void giveValuesCard(){
@@ -26,11 +30,11 @@ public class SceneControllerCard{
     }
 
     public void addProductButton(ActionEvent event){
-        
+        userCart.addProduct(product, 1);
     }
 
     public void removeProductButton(ActionEvent event){
-
+        userCart.removeProduct(product, 1);
     }
 
 }

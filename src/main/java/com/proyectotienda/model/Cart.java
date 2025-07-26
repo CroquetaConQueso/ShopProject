@@ -19,7 +19,7 @@ public class Cart implements CartActions {
     }
 
     @Override
-    public float calculateTotal(){
+    public float calculateTotal() {
         return (float) products.entrySet().stream()
                 .mapToDouble(e -> e.getKey().getProductPrice() * e.getValue())
                 .sum();
@@ -31,15 +31,21 @@ public class Cart implements CartActions {
     }
 
     @Override
-    public void showCart(){
+    public String showCart() {
         if (products.isEmpty()) {
-            System.out.println("Cart is empty.");
+            return "The cart is empty";
         } else {
+            StringBuilder total = new StringBuilder();
             for (Map.Entry<Product, Integer> entry : products.entrySet()) {
-                System.out.println(entry.getKey() + " | Quantity: " + entry.getValue()+" | Total: "+entry.getKey().getProductPrice()*entry.getValue());
+                total.append(String.format("%s %d - Total: %.2f\n", entry.getKey().getProductName(),
+                        entry.getKey().getProductPrice(), entry.getKey().getProductPrice() * entry.getValue()));
+                // System.out.println(entry.getKey() + " | Quantity: " + entry.getValue()+" |
+                // Total: "+entry.getKey().getProductPrice()*entry.getValue());
             }
+            return total.toString();
         }
     }
+
     @Override
     public Map<Product, Integer> getProducts() {
         return products;
