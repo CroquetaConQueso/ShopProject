@@ -12,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
@@ -35,6 +34,7 @@ public class SceneControllerLogin {
     @FXML
     private PasswordField passFieldUserSc1;
 
+    //Method that setups the loggin of the suer
     public void loggin(ActionEvent event) throws IOException {
         Alert alert = new Alert(AlertType.ERROR);
         String username = textFieldUserSc1.getText();
@@ -53,6 +53,7 @@ public class SceneControllerLogin {
         Parent root = loader.load();
         SceneControllerMenu menuController = loader.getController();
         Cart userCart = new Cart();
+        //passes the user to the main menu
         s.setUserCart(userCart);
         menuController.setUser(s);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -62,6 +63,7 @@ public class SceneControllerLogin {
 
     }
 
+    //If the user doesn't have an user they can log
     public void registerAccount(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/register.fxml"));
