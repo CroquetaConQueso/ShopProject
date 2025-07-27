@@ -37,7 +37,7 @@ public class Cart implements CartActions {
         } else {
             StringBuilder total = new StringBuilder();
             for (Map.Entry<Product, Integer> entry : products.entrySet()) {
-                total.append(String.format("%s %d - Total: %.2f\n", entry.getKey().getProductName(),
+                total.append(String.format("%s  -  %d - Total: %.2f\n", entry.getKey().getProductName(),
                         entry.getValue(), entry.getKey().getProductPrice() * entry.getValue()));
                 // System.out.println(entry.getKey() + " | Quantity: " + entry.getValue()+" |
                 // Total: "+entry.getKey().getProductPrice()*entry.getValue());

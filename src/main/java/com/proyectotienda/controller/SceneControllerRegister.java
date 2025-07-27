@@ -21,6 +21,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+
+//This Class is meant to control the registration, it is a simple class which displays the future values. Having a turn on/off of the passfield into a textfield
 public class SceneControllerRegister {
     @FXML
     private Button returnToLoginButton;

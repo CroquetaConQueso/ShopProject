@@ -3,12 +3,14 @@ package com.proyectotienda.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.proyectotienda.app.AppContext;
 import com.proyectotienda.model.Product;
 import com.proyectotienda.model.User;
 
+import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -18,12 +20,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class SceneControllerMenu implements Initializable {
     private User loggedUser;
@@ -32,6 +39,10 @@ public class SceneControllerMenu implements Initializable {
     @FXML
     private Button accountButton;
     @FXML
+    private Button buttonCloseCart;
+    @FXML
+    private Button buttonShowCart;
+    @FXML
     private ListView<String> listViewProducts;
     @FXML
     private Label labelTitle;
@@ -39,6 +50,12 @@ public class SceneControllerMenu implements Initializable {
     private TextArea dataDump;
     @FXML
     private GridPane gridProducts;
+    @FXML
+    private Pane slideMenu;
+    @FXML
+    private Pane labelTitles;
+    @FXML
+    private Button buyButton;
 
     String[] listValues = { "Food", "Clothing", "Electronics" };
     String currentChoice;
@@ -51,6 +68,7 @@ public class SceneControllerMenu implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         listViewProducts.getItems().addAll(listValues);
+        slideMenu.setTranslateX(200);
         listViewProducts.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 
             @Override
@@ -66,6 +84,37 @@ public class SceneControllerMenu implements Initializable {
 
         });
         
+        buttonShowCart.setOnMouseClicked(event -> {
+            TranslateTransition slide = new TranslateTransition();
+            slide.setDuration(Duration.seconds(0.4));
+            slide.setNode(slideMenu);
+
+            slide.setToX(200);
+            slide.play();
+
+            slideMenu.setTranslateX(0);
+
+            slide.setOnFinished((ActionEvent e)->{
+                buttonShowCart.setVisible(false);
+                buttonCloseCart.setVisible(true);
+            });
+        });
+
+        buttonCloseCart.setOnMouseClicked(event -> {
+            TranslateTransition slide = new TranslateTransition();
+            slide.setDuration(Duration.seconds(0.4));
+            slide.setNode(slideMenu);
+
+            slide.setToX(0);
+            slide.play();
+
+            slideMenu.setTranslateX(200);
+
+            slide.setOnFinished((ActionEvent e) ->{
+                buttonShowCart.setVisible(true);
+                buttonCloseCart.setVisible(false);
+            });
+        });
 
     }
 
@@ -136,6 +185,26 @@ public class SceneControllerMenu implements Initializable {
 
     public void showCart(ActionEvent event){
         labelShowCart.setText(loggedUser.getUserCart().showCart());
+    }
+
+    public void buyingCart(ActionEvent event){
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+
+        alerta.setTitle("Confirmation");
+        alerta.setHeaderText("Buying Cart");
+        alerta.setContentText("Do you want to confirm your transaction?");
+        ButtonType yes = new ButtonType("Yes");
+        ButtonType no = new ButtonType("No");
+        
+        alerta.getButtonTypes().setAll(yes,no);
+
+        Optional<ButtonType> choice = alerta.showAndWait();
+
+        if(choice.isPresent() && choice.get() == yes){
+            System.out.println(loggedUser.buyCart());
+        }else{
+            return;
+        }
     }
 
 }
