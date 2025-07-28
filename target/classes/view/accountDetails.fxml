@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proyectotienda.controller.SceneControllerAccountDetails">
+   <children>
+      <Button fx:id="returnToMenuButton" layoutX="484.0" layoutY="14.0" mnemonicParsing="false" onAction="#returnToMenu" text="Return To Menu" />
+      <Label fx:id="nameAccountInfo" layoutX="180.0" layoutY="163.0" text="Name:" />
+      <Label fx:id="passAccountInfo" layoutX="162.0" layoutY="201.0" text="Password:" />
+      <Label layoutX="246.0" layoutY="111.0" text="Account Information" />
+      <CheckBox fx:id="showpassAccountDetails" layoutX="389.0" layoutY="201.0" mnemonicParsing="false" onAction="#showPass" text="Show Password" />
+      <Label fx:id="fundsAccountInfo" layoutX="175.0" layoutY="235.0" text="Funds:" />
+      <Button fx:id="transferButtonAccountDetails" layoutX="389.0" layoutY="231.0" mnemonicParsing="false" onAction="#addFunds" prefHeight="25.0" prefWidth="102.0" text="Transfer Funds" />
+      <TextField fx:id="namefieldAccountDetails" layoutX="226.0" layoutY="159.0" onAction="#showValues" />
+      <TextField fx:id="fundfieldAccountDetails" layoutX="226.0" layoutY="231.0" onAction="#showValues" />
+      <PasswordField fx:id="passfieldAccountDetails" layoutX="226.0" layoutY="197.0" onAction="#showValues" />
+      <TextField fx:id="textpassfieldAccountDetails" layoutX="226.0" layoutY="197.0" onAction="#showValues" />
+   </children>
+</AnchorPane>

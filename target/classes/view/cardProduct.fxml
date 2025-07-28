@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="242.0" prefWidth="269.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proyectotienda.controller.SceneControllerCard">
+   <children>
+      <Label fx:id="labelProductName" layoutX="55.0" layoutY="155.0" text="NAME:">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelProductPrice" layoutX="151.0" layoutY="155.0" text="PRICE:">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Button layoutX="36.0" layoutY="14.0" mnemonicParsing="false" prefHeight="135.0" prefWidth="198.0" text="TEMPO/TEST SPACE FOR IMAGE" />
+      <Button fx:id="addButtonCardProduct" layoutX="62.0" layoutY="184.0" mnemonicParsing="false" onAction="#addProductButton" text="Add" />
+      <Button fx:id="removeButtonCardProduct" layoutX="146.0" layoutY="184.0" mnemonicParsing="false" onAction="#removeProductButton" text="Remove" />
+   </children>
+</AnchorPane>

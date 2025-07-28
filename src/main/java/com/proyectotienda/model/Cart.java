@@ -1,10 +1,12 @@
 package com.proyectotienda.model;
 
-import java.util.HashMap;
 import java.util.Map;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
+
 public class Cart implements CartActions {
-    private Map<Product, Integer> products = new HashMap<>();
+    private final ObservableMap<Product, Integer> products = FXCollections.observableHashMap();
 
     @Override
     public void addProduct(Product addP, int quantity) {
@@ -47,7 +49,7 @@ public class Cart implements CartActions {
     }
 
     @Override
-    public Map<Product, Integer> getProducts() {
+    public ObservableMap<Product, Integer> getProducts() {
         return products;
     }
 }

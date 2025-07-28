@@ -13,6 +13,7 @@ import com.proyectotienda.model.User;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.MapChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -61,6 +62,10 @@ public class SceneControllerMenu implements Initializable {
 
     public void setUser(User user){
         this.loggedUser = user;
+
+        labelShowCart.setText(loggedUser.getUserCart().showCart());
+
+        loggedUser.getUserCart().getProducts().addListener((MapChangeListener<Product,Integer>) change -> labelShowCart.setText(loggedUser.getUserCart().showCart()));
     }
     // Loads the values of the ListView and gives them each type, which I have
     // already preestablished on the String Array
@@ -176,6 +181,7 @@ public class SceneControllerMenu implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/primary.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/css/logginstyle.css").toExternalForm());
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
