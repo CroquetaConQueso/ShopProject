@@ -19,35 +19,54 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 //This Class is meant to control the registration, it is a simple class which displays the future values. Having a turn on/off of the passfield into a textfield
 public class SceneControllerRegister implements Initializable {
-    @FXML
-    private Button returnToLoginButton;
+        @FXML
+    private AnchorPane anchorRegister;
+
     @FXML
     private Button buttonRegister;
+
     @FXML
-    private TextField nameTextFieldRegister;
-    @FXML
-    private PasswordField passwordFieldRegister;
-    @FXML
-    private PasswordField passwordFieldConfirmationRegister;
+    private CheckBox checkRegister;
+
     @FXML
     private Label errorNameRegister;
-    @FXML
-    private Label errorPasswordRegister;
+
     @FXML
     private Label errorPasswordConfirmationRegister;
+
+    @FXML
+    private Label errorPasswordRegister;
+
+    @FXML
+    private TextField nameTextFieldRegister;
+
+    @FXML
+    private PasswordField passwordFieldConfirmationRegister;
+
+    @FXML
+    private PasswordField passwordFieldRegister;
+
+    @FXML
+    private Button returnToLogginButton;
+
+    @FXML
+    private Label titleRegister;
 
     public void returnToLoggin(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/primary.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/css/logginstyle.css").toExternalForm());
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
@@ -105,6 +124,7 @@ public class SceneControllerRegister implements Initializable {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/primary.fxml"));
                 Parent root = loader.load();
                 Scene scene = new Scene(root);
+                scene.getStylesheets().add(getClass().getResource("/css/logginstyle.css").toExternalForm());
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setScene(scene);
                 stage.show();

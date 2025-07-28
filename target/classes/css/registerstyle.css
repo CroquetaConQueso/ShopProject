@@ -1,0 +1,36 @@
+.anchorRegister{
+    -fx-background-color: #8f038f;
+}
+.label{
+    -fx-font-family: "Lucida Console";
+}
+
+.returnToLogginButton{
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #FFA500, #FF8C00, #FF7F50);
+    -fx-border-color: black;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+}
+
+.buttonRegister{
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #b40fb4, #b30cb3, #750275);
+    -fx-border-color: black;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.passwordFieldConfirmationRegister{
+    -fx-background-color: yellow;
+    -fx-border-width: 8;
+}
+
+.passwordFieldRegister{
+    -fx-background-color: yellow;
+    -fx-border-width: 8;
+}
+
+.nameTextFieldRegister{
+    -fx-border-radius: 10;
+    -fx-border-style: solid;
+    -fx-background-color: rgb(14, 179, 14);
+}

@@ -1,0 +1,33 @@
+.anchorPaneLoggin{
+    -fx-background-color: #ffa500;
+}
+
+.label{
+    -fx-font-family: "Lucida Console";
+}
+
+.registerBottonSc1{
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #FFA500, #FF8C00, #FF7F50);
+    -fx-border-color: black;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.textFieldUserSc1{
+    -fx-background-color: rgb(236, 222, 18);
+    -fx-border-radius: 10;
+}
+
+.passFieldUserSc1{
+    -fx-background-color: rgb(236, 222, 18);
+    -fx-border-radius: 10;
+}
+
+.passTextUserSc1{
+    -fx-background-color: rgb(236, 222, 18);
+    -fx-border-radius: 10;
+}
+
+.titlePane{
+    -fx-background-color: #ec9d0a;
+}

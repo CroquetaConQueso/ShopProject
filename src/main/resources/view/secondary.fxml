@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="labelTitles" prefHeight="820.0" prefWidth="1258.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proyectotienda.controller.SceneControllerMenu">
+    <children>
+        <Label fx:id="labelTitle" layoutX="427.0" layoutY="35.0" text="Menu">
+         <font>
+            <Font size="33.0" />
+         </font></Label>
+      <Button fx:id="accountButton" layoutX="1020.0" layoutY="24.0" mnemonicParsing="false" onAction="#accountData" text="Account" />
+      <Button fx:id="buttonShowCart" layoutX="1098.0" layoutY="24.0" mnemonicParsing="false" onAction="#showCart" text="Cart" />
+      <Button fx:id="buttonCloseCart" layoutX="1098.0" layoutY="24.0" mnemonicParsing="false" onAction="#showCart" text="Cart" />
+      <Button fx:id="disconnectButton" layoutX="1155.0" layoutY="24.0" mnemonicParsing="false" onAction="#disconnect" text="Disconnect" />
+      <ListView fx:id="listViewProducts" prefHeight="700.0" prefWidth="141.0" />
+      <GridPane fx:id="gridProducts" hgap="30.0" layoutX="153.0" layoutY="151.0" prefHeight="615.0" prefWidth="761.0" vgap="55.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+      <Pane fx:id="slideMenu" layoutX="1055.0" layoutY="77.0" prefHeight="615.0" prefWidth="200.0" style="-fx-background-color: #797373;" AnchorPane.leftAnchor="1058.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <SplitPane dividerPositions="0.43434343434343436" prefHeight="32.0" prefWidth="200.0" style="-fx-background-color: #797373;">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #793373;">
+                     <children>
+                        <Label layoutX="6.0" layoutY="8.0" text="Product Type" />
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #793373;">
+                     <children>
+                        <Label layoutX="36.0" layoutY="6.0" text="Total" />
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+            <Label fx:id="labelShowCart" layoutX="14.0" layoutY="42.0" text="Label" />
+            <Pane layoutY="566.0" prefHeight="49.0" prefWidth="200.0" style="-fx-background-color: #793373;">
+               <children>
+                  <Button fx:id="buyButton" layoutX="59.0" layoutY="10.0" mnemonicParsing="false" onAction="#buyingCart" prefHeight="30.0" prefWidth="83.0" text="Buy" />
+               </children>
+            </Pane>
+         </children>
+         <effect>
+            <ColorAdjust />
+         </effect>
+      </Pane>
+    </children>
+</AnchorPane>

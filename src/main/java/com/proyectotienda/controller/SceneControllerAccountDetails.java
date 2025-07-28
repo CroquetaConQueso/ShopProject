@@ -32,7 +32,7 @@ public class SceneControllerAccountDetails {
     private TextField fundfieldAccountDetails;
     @FXML
     private PasswordField passfieldAccountDetails;
-    
+
     public void setUser(User user){
         this.loggedUser = user;
         showValues();
@@ -73,5 +73,10 @@ public class SceneControllerAccountDetails {
             textpassfieldAccountDetails.setVisible(false);
             textpassfieldAccountDetails.setManaged(false);
         }
+    }
+
+    public void addFunds(ActionEvent event){
+        float funds = loggedUser.getUserFunds();
+        loggedUser.setUserFunds(funds+=100);
     }
 }
