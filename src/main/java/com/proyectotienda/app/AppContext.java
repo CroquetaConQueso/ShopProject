@@ -6,7 +6,7 @@ import com.proyectotienda.controller.ProductInputHandler;
 import com.proyectotienda.controller.UserInputHandler;
 import com.proyectotienda.repository.ProductDAO;
 import com.proyectotienda.repository.UserDAO;
-
+//Class that is an utility class and that gives context to other classes
 public class AppContext {
     private static UserDAO userDAO;
     private static ProductDAO productDAO;

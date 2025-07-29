@@ -1,14 +1,7 @@
 package com.proyectotienda.controller;
 
-import java.util.Scanner;
-
 public class UserInputHandler {
-    private final Scanner input;
-
-    public UserInputHandler(Scanner input) {
-        this.input = input;
-    }
-
+    //I think this class could have been a static class, yet I have kept it as a "normal class" just in case
     public  boolean getValidatedName(String name) {
 
         if (name.length() > 50) {

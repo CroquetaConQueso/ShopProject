@@ -69,12 +69,10 @@ public class Main extends Application {
             conn = DBConnection.getConnection();
 
             // Classes related to the User
-            User s = null;
             UserDAO userDAO = new UserDAO(conn);
-            UserInputHandler userInputHandler = new UserInputHandler(input);
+            UserInputHandler userInputHandler = new UserInputHandler();
 
             // Classes related to the product
-            Product p = null;
             ProductDAO productDAO = new ProductDAO(conn);
             ProductInputHandler productInputHandler = new ProductInputHandler(input);
 
