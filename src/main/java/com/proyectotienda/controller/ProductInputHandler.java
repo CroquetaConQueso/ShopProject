@@ -4,15 +4,18 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ProductInputHandler {
+    //We pass the value of scanner
     private final Scanner input;
+    //I established the types of products
     private String[] productList = {
-            "Electronics", "Clothing", "Books", "Home", "Toys", "Fish", "Meat", "Vegetables"
+        "Electronics", "Clothing", "Books", "Home", "Toys", "Fish", "Meat", "Vegetables"
     };
 
     public ProductInputHandler(Scanner input) {
         this.input = input;
     }
-
+    
+    //This class is a vestige due to how the GUI was implemented
     public String getValidatedName(String pName) {
         System.out.print(pName);
         String name = input.nextLine();

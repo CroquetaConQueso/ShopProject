@@ -51,6 +51,7 @@ public class SceneControllerAccountDetails {
         }catch(IOException e){System.out.println(e);}
     }
 
+    //Displays the values of the account right away
     public void showValues(){
         textpassfieldAccountDetails.setVisible(false);
         textpassfieldAccountDetails.setManaged(false);
@@ -59,7 +60,7 @@ public class SceneControllerAccountDetails {
         fundfieldAccountDetails.setText(String.valueOf(loggedUser.getUserFunds()));
         textpassfieldAccountDetails.setText(loggedUser.getUserPass());
     }
-
+    //Allows swaps between the modes so you are able to see the pass
     public void showPass(ActionEvent event){
         if(showpassAccountDetails.isSelected()){
             passfieldAccountDetails.setVisible(false);
@@ -74,7 +75,7 @@ public class SceneControllerAccountDetails {
             textpassfieldAccountDetails.setManaged(false);
         }
     }
-
+    //A simple method in which funds are added into the account
     public void addFunds(ActionEvent event){
         float funds = loggedUser.getUserFunds();
         loggedUser.setUserFunds(funds+=100);

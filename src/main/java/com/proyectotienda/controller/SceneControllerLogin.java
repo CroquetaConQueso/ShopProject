@@ -77,6 +77,7 @@ public class SceneControllerLogin implements Initializable{
             alert.showAndWait();
             return;
         }
+        //Establishes the connection with the database
         User s = userDAO.logUserDao(username);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/secondary.fxml"));
@@ -114,9 +115,11 @@ public class SceneControllerLogin implements Initializable{
         this.userDAO = AppContext.getUserDAO();
         passTextUserSc1.setVisible(false);
         passTextUserSc1.setManaged(false);
+        //This provides the ability to have the passfield and the passtext to be tracked, allowing it to be returned/obtained with ease
         passFieldUserSc1.textProperty().addListener((obs,oldText,newText) -> passTextUserSc1.setText(newText));
         passTextUserSc1.textProperty().addListener((obs,oldText,newText) -> passFieldUserSc1.setText(newText));
 
+        //If it is selected the passFieldwill be hidden and the passtedt will be revealed
         showPassCheckLoggin.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
         if (isSelected) {
             passTextUserSc1.setText(passFieldUserSc1.getText());
